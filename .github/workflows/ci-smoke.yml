@@ -1,0 +1,44 @@
+name: nf-prism-smoke
+
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        run:
+          - name: clinical-hc
+            args: "-profile test --workflow clinical --caller haplotypecaller"
+          - name: genealogy-hc
+            args: "-profile test --workflow genealogy --caller haplotypecaller"
+          - name: clinical-dv
+            args: "-profile test --workflow clinical --caller deepvariant"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Setup Nextflow
+        uses: nf-core/setup-nextflow@v2
+        with:
+          version: '25.04.3'
+
+      - name: Validate config
+        run: nextflow config
+
+      - name: Run ${{ matrix.run.name }} stub smoke
+        run: |
+          set -euo pipefail
+          nextflow run . -stub-run -resume ${{ matrix.run.args }}

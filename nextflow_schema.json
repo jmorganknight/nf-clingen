@@ -1,0 +1,95 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "nf-prism parameter schema",
+  "description": "Schema for the nf-prism multi-omic routing workflow.",
+  "type": "object",
+  "required": [
+    "reads",
+    "reference",
+    "outdir",
+    "skip_qc",
+    "aligner",
+    "preprocess",
+    "caller",
+    "workflow"
+  ],
+  "properties": {
+    "reads": {
+      "type": "string",
+      "default": "${projectDir}/data/*_R{1,2}.fastq.gz",
+      "description": "Glob pattern for paired-end FASTQ inputs."
+    },
+    "reference": {
+      "type": "string",
+      "default": "${projectDir}/data/GRCh38.fasta",
+      "description": "Reference FASTA used for alignment and calling."
+    },
+    "outdir": {
+      "type": "string",
+      "default": "${projectDir}/results",
+      "description": "Published output directory."
+    },
+    "skip_qc": {
+      "type": "boolean",
+      "default": false,
+      "description": "Bypass FASTQC and FASTP when true."
+    },
+    "aligner": {
+      "type": "string",
+      "enum": [
+        "minimap2",
+        "bwamem2"
+      ],
+      "default": "minimap2",
+      "description": "Alignment engine selector."
+    },
+    "preprocess": {
+      "type": "string",
+      "enum": [
+        "samtools",
+        "elprep"
+      ],
+      "default": "samtools",
+      "description": "Alignment post-processing engine."
+    },
+    "caller": {
+      "type": "string",
+      "enum": [
+        "haplotypecaller",
+        "deepvariant"
+      ],
+      "default": "haplotypecaller",
+      "description": "Variant calling engine selector."
+    },
+    "workflow": {
+      "type": "string",
+      "enum": [
+        "clinical",
+        "genealogy"
+      ],
+      "default": "clinical",
+      "description": "Business endpoint branch."
+    },
+    "clinvar_vcf": {
+      "type": "string",
+      "default": null,
+      "description": "Optional ClinVar VCF used to overlay local clinical assertions."
+    },
+    "max_report_variants": {
+      "type": "integer",
+      "default": 25,
+      "minimum": 1,
+      "description": "Maximum number of prioritized variants retained in the clinical report tables."
+    },
+    "help": {
+      "type": "boolean",
+      "default": false,
+      "description": "Print workflow help derived from the schema and exit."
+    },
+    "validate_only": {
+      "type": "boolean",
+      "default": false,
+      "description": "Validate parameters against the schema and exit before execution."
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^nextflow run \\. --help \\| cat$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^pwd && cd /media/drive_c/nf_pipes && nextflow run \\. -profile test -stub-run --workflow clinical --caller haplotypecaller && nextflow run \\. -profile test -stub-run --workflow genealogy --caller haplotypecaller && nextflow run \\. -profile test -stub-run --workflow clinical --caller deepvariant$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}

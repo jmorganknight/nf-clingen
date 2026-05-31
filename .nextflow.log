@@ -1,0 +1,419 @@
+May-31 09:57:31.961 [main] DEBUG nextflow.cli.Launcher - $> nextflow run . -profile test -stub-run --workflow clinical --caller deepvariant
+May-31 09:57:32.067 [main] DEBUG nextflow.cli.CmdRun - N E X T F L O W  ~  version 25.04.3
+May-31 09:57:32.084 [main] DEBUG nextflow.plugin.PluginsFacade - Setting up plugin manager > mode=prod; embedded=false; plugins-dir=/home/jmk/.nextflow/plugins; core-plugins: nf-amazon@2.15.0,nf-azure@1.16.0,nf-cloudcache@0.4.3,nf-codecommit@0.2.3,nf-console@1.2.1,nf-google@1.21.0,nf-k8s@1.0.0,nf-tower@1.11.3,nf-wave@1.12.1
+May-31 09:57:32.102 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+May-31 09:57:32.103 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+May-31 09:57:32.105 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.12.0 in 'deployment' mode
+May-31 09:57:32.113 [main] INFO  org.pf4j.AbstractPluginManager - No plugins
+May-31 09:57:32.569 [main] DEBUG nextflow.config.ConfigBuilder - Found config local: /media/drive_c/nf_pipes/nextflow.config
+May-31 09:57:32.570 [main] DEBUG nextflow.config.ConfigBuilder - Parsing config file: /media/drive_c/nf_pipes/nextflow.config
+May-31 09:57:32.581 [main] DEBUG n.secret.LocalSecretsProvider - Secrets store: /home/jmk/.nextflow/secrets/store.json
+May-31 09:57:32.583 [main] DEBUG nextflow.secret.SecretsLoader - Discovered secrets providers: [nextflow.secret.LocalSecretsProvider@58d6b7b9] - activable => nextflow.secret.LocalSecretsProvider@58d6b7b9
+May-31 09:57:32.591 [main] DEBUG nextflow.config.ConfigBuilder - Applying config profile: `test`
+May-31 09:57:32.692 [main] DEBUG nextflow.config.ConfigBuilder - Available config profiles: [test, apptainer, singularity, docker]
+May-31 09:57:32.714 [main] DEBUG nextflow.cli.CmdRun - Applied DSL=2 from script declaration
+May-31 09:57:32.724 [main] DEBUG nextflow.cli.CmdRun - Launching `./main.nf` [stoic_rubens] DSL2 - revision: ab1dcf7eee
+May-31 09:57:32.725 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins default=[]
+May-31 09:57:32.725 [main] DEBUG nextflow.plugin.PluginsFacade - Plugins resolved requirement=[]
+May-31 09:57:32.759 [main] DEBUG nextflow.Session - Session UUID: efce601a-cbbd-45e1-b515-824b701fad26
+May-31 09:57:32.759 [main] DEBUG nextflow.Session - Run name: stoic_rubens
+May-31 09:57:32.759 [main] DEBUG nextflow.Session - Executor pool size: 64
+May-31 09:57:32.764 [main] DEBUG nextflow.file.FilePorter - File porter settings maxRetries=3; maxTransfers=50; pollTimeout=null
+May-31 09:57:32.768 [main] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'FileTransfer' minSize=10; maxSize=192; workQueue=LinkedBlockingQueue[-1]; allowCoreThreadTimeout=false
+May-31 09:57:32.782 [main] DEBUG nextflow.cli.CmdRun - 
+  Version: 25.04.3 build 5949
+  Created: 02-06-2025 20:56 UTC (15:56 CDT)
+  System: Linux 6.8.0-101-generic
+  Runtime: Groovy 4.0.26 on OpenJDK 64-Bit Server VM 21.0.11+10-1-24.04.2-Ubuntu
+  Encoding: UTF-8 (UTF-8)
+  Process: 3153287@jmk-bob [127.0.1.1]
+  CPUs: 64 - Mem: 503.5 GB (473.2 GB) - Swap: 2 GB (2 GB)
+May-31 09:57:32.798 [main] DEBUG nextflow.Session - Work-dir: /media/drive_c/nf_pipes/work [ext2/ext3]
+May-31 09:57:32.798 [main] DEBUG nextflow.Session - Script base path does not exist or is not a directory: /media/drive_c/nf_pipes/bin
+May-31 09:57:32.805 [main] DEBUG nextflow.executor.ExecutorFactory - Extension executors providers=[]
+May-31 09:57:32.813 [main] DEBUG nextflow.Session - Observer factory: DefaultObserverFactory
+May-31 09:57:32.831 [main] DEBUG nextflow.Session - Observer factory (v2): LinObserverFactory
+May-31 09:57:32.847 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+May-31 09:57:32.853 [main] DEBUG nextflow.util.CustomThreadPool - Creating default thread pool > poolSize: 65; maxThreads: 1000
+May-31 09:57:32.901 [main] DEBUG nextflow.Session - Session start
+May-31 09:57:32.904 [main] DEBUG nextflow.trace.TraceFileObserver - Workflow started -- trace file: /media/drive_c/nf_pipes/results/test/pipeline_info/trace.txt
+May-31 09:57:32.905 [main] DEBUG nextflow.Session - Trace file already exists: /media/drive_c/nf_pipes/results/test/pipeline_info/trace.txt -- enable the 'trace.overwrite' option in your config file to overwrite existing files
+nextflow.exception.AbortOperationException: Trace file already exists: /media/drive_c/nf_pipes/results/test/pipeline_info/trace.txt -- enable the 'trace.overwrite' option in your config file to overwrite existing files
+	at nextflow.trace.TraceHelper.newFileWriter(TraceHelper.groovy:67)
+	at nextflow.trace.TraceFileObserver.onFlowCreate(TraceFileObserver.groovy:206)
+	at nextflow.Session$_notifyFlowCreate_lambda40.doCall(Session.groovy:1093)
+	at nextflow.Session.notifyEvent(Session.groovy:1138)
+	at nextflow.Session.notifyFlowCreate(Session.groovy:1093)
+	at nextflow.Session.start(Session.groovy:585)
+	at nextflow.script.ScriptRunner.execute(ScriptRunner.groovy:133)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:379)
+	at nextflow.cli.Launcher.run(Launcher.groovy:513)
+	at nextflow.cli.Launcher.main(Launcher.groovy:673)
+Caused by: java.nio.file.FileAlreadyExistsException: /media/drive_c/nf_pipes/results/test/pipeline_info/trace.txt
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:94)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.newByteChannel(UnixFileSystemProvider.java:261)
+	at java.base/java.nio.file.spi.FileSystemProvider.newOutputStream(FileSystemProvider.java:482)
+	at java.base/java.nio.file.Files.newOutputStream(Files.java:228)
+	at java.base/java.nio.file.Files.newBufferedWriter(Files.java:3001)
+	at nextflow.trace.TraceHelper.newFileWriter(TraceHelper.groovy:64)
+	... 9 common frames omitted
+May-31 09:57:32.907 [main] DEBUG nextflow.Session - Report file already exists: /media/drive_c/nf_pipes/results/test/pipeline_info/report.html -- enable the 'report.overwrite' option in your config file to overwrite existing files
+nextflow.exception.AbortOperationException: Report file already exists: /media/drive_c/nf_pipes/results/test/pipeline_info/report.html -- enable the 'report.overwrite' option in your config file to overwrite existing files
+	at nextflow.trace.ReportObserver.onFlowCreate(ReportObserver.groovy:133)
+	at nextflow.Session$_notifyFlowCreate_lambda40.doCall(Session.groovy:1093)
+	at nextflow.Session.notifyEvent(Session.groovy:1138)
+	at nextflow.Session.notifyFlowCreate(Session.groovy:1093)
+	at nextflow.Session.start(Session.groovy:585)
+	at nextflow.script.ScriptRunner.execute(ScriptRunner.groovy:133)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:379)
+	at nextflow.cli.Launcher.run(Launcher.groovy:513)
+	at nextflow.cli.Launcher.main(Launcher.groovy:673)
+May-31 09:57:32.907 [main] DEBUG nextflow.Session - Timeline file already exists: /media/drive_c/nf_pipes/results/test/pipeline_info/timeline.html -- enable the 'timeline.overwrite' option in your config file to overwrite existing files
+nextflow.exception.AbortOperationException: Timeline file already exists: /media/drive_c/nf_pipes/results/test/pipeline_info/timeline.html -- enable the 'timeline.overwrite' option in your config file to overwrite existing files
+	at nextflow.trace.TimelineObserver.onFlowCreate(TimelineObserver.groovy:76)
+	at nextflow.Session$_notifyFlowCreate_lambda40.doCall(Session.groovy:1093)
+	at nextflow.Session.notifyEvent(Session.groovy:1138)
+	at nextflow.Session.notifyFlowCreate(Session.groovy:1093)
+	at nextflow.Session.start(Session.groovy:585)
+	at nextflow.script.ScriptRunner.execute(ScriptRunner.groovy:133)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:379)
+	at nextflow.cli.Launcher.run(Launcher.groovy:513)
+	at nextflow.cli.Launcher.main(Launcher.groovy:673)
+May-31 09:57:32.908 [main] DEBUG nextflow.Session - DAG file already exists: /media/drive_c/nf_pipes/results/test/pipeline_info/dag.svg -- enable `dag.overwrite` in your config file to overwrite existing DAG files
+nextflow.exception.AbortOperationException: DAG file already exists: /media/drive_c/nf_pipes/results/test/pipeline_info/dag.svg -- enable `dag.overwrite` in your config file to overwrite existing DAG files
+	at org.codehaus.groovy.vmplugin.v8.IndyInterface.fromCache(IndyInterface.java:321)
+	at nextflow.trace.GraphObserver.onFlowCreate(GraphObserver.groovy:77)
+	at nextflow.Session$_notifyFlowCreate_lambda40.doCall(Session.groovy:1093)
+	at nextflow.Session.notifyEvent(Session.groovy:1138)
+	at nextflow.Session.notifyFlowCreate(Session.groovy:1093)
+	at nextflow.Session.start(Session.groovy:585)
+	at nextflow.script.ScriptRunner.execute(ScriptRunner.groovy:133)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:379)
+	at nextflow.cli.Launcher.run(Launcher.groovy:513)
+	at nextflow.cli.Launcher.main(Launcher.groovy:673)
+May-31 09:57:33.162 [main] DEBUG nextflow.script.ScriptRunner - > Launching execution
+May-31 09:57:33.746 [main] INFO  nextflow.Nextflow - 
+==============================================
+                 nf-prism runtime
+==============================================
+Reads pattern         : /media/drive_c/nf_pipes/data/test_sample*_R{1,2}.fastq.gz
+Reference FASTA       : /media/drive_c/nf_pipes/data/test_ref.fa
+Output directory      : /media/drive_c/nf_pipes/results/test
+Skip QC               : true
+Alignment engine      : minimap2
+Preprocess engine     : samtools
+Variant caller        : deepvariant
+Endpoint workflow     : clinical
+ClinVar resource      : disabled
+Report variant limit  : 25
+==============================================
+Reference indexes are built on demand inside the workflow.
+Clinical reporting uses bcftools-based local triage with optional ClinVar overlay and WeasyPrint PDF generation.
+
+May-31 09:57:33.823 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:BUILD_FASTA_INDEX` matches process SF_UPSTREAM:BUILD_FASTA_INDEX
+May-31 09:57:33.833 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: local
+May-31 09:57:33.833 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+May-31 09:57:33.837 [main] DEBUG nextflow.executor.Executor - [warm up] executor > local
+May-31 09:57:33.842 [main] DEBUG n.processor.LocalPollingMonitor - Creating local task monitor for executor 'local' > cpus=64; memory=503.5 GB; capacity=64; pollInterval=100ms; dumpInterval=5m
+May-31 09:57:33.843 [main] DEBUG n.processor.TaskPollingMonitor - >>> barrier register (monitor: local)
+May-31 09:57:33.859 [main] DEBUG nextflow.processor.TaskProcessor - Creating process 'SF_UPSTREAM:BUILD_FASTA_INDEX': maxForks=2; fair=false; array=0
+May-31 09:57:33.880 [main] INFO  nextflow.Nextflow - QC routing: FASTQC and FASTP skipped; raw reads move directly to alignment.
+May-31 09:57:33.882 [main] INFO  nextflow.Nextflow - Alignment routing: minimap2 short-read mode selected.
+May-31 09:57:33.898 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:ALIGN_MINIMAP2` matches process SF_ALIGNMENT:ALIGN_MINIMAP2
+May-31 09:57:33.900 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: local
+May-31 09:57:33.900 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+May-31 09:57:33.901 [main] DEBUG nextflow.processor.TaskProcessor - Creating process 'SF_ALIGNMENT:ALIGN_MINIMAP2': maxForks=2; fair=false; array=0
+May-31 09:57:33.903 [main] INFO  nextflow.Nextflow - Preprocess routing: samtools sort/index selected.
+May-31 09:57:33.906 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:RUN_SAMTOOLS` matches process SF_PREPROCESS:RUN_SAMTOOLS
+May-31 09:57:33.908 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: local
+May-31 09:57:33.908 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+May-31 09:57:33.909 [main] DEBUG nextflow.processor.TaskProcessor - Creating process 'SF_PREPROCESS:RUN_SAMTOOLS': maxForks=2; fair=false; array=0
+May-31 09:57:33.911 [main] INFO  nextflow.Nextflow - Variant routing: DeepVariant selected.
+May-31 09:57:33.917 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:CALL_DEEPVARIANT` matches process SF_CALLING:CALL_DEEPVARIANT
+May-31 09:57:33.919 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: local
+May-31 09:57:33.919 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+May-31 09:57:33.920 [main] DEBUG nextflow.processor.TaskProcessor - Creating process 'SF_CALLING:CALL_DEEPVARIANT': maxForks=2; fair=false; array=0
+May-31 09:57:33.922 [main] INFO  nextflow.Nextflow - Endpoint routing: clinical annotation and PDF compilation selected.
+May-31 09:57:33.924 [main] INFO  nextflow.Nextflow - Clinical annotations: using intrinsic VCF annotations only.
+May-31 09:57:33.929 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:RUN_CLINICAL_ANNOTATION` matches process SF_ENDPOINTS:RUN_CLINICAL_ANNOTATION
+May-31 09:57:33.931 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: local
+May-31 09:57:33.931 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+May-31 09:57:33.931 [main] DEBUG nextflow.processor.TaskProcessor - Creating process 'SF_ENDPOINTS:RUN_CLINICAL_ANNOTATION': maxForks=2; fair=false; array=0
+May-31 09:57:33.936 [main] DEBUG nextflow.script.ProcessConfig - Config settings `withName:BUILD_CLINICAL_REPORT` matches process SF_ENDPOINTS:BUILD_CLINICAL_REPORT
+May-31 09:57:33.938 [main] DEBUG nextflow.executor.ExecutorFactory - << taskConfig executor: local
+May-31 09:57:33.938 [main] DEBUG nextflow.executor.ExecutorFactory - >> processorType: 'local'
+May-31 09:57:33.939 [main] DEBUG nextflow.processor.TaskProcessor - Creating process 'SF_ENDPOINTS:BUILD_CLINICAL_REPORT': maxForks=2; fair=false; array=0
+May-31 09:57:33.940 [main] DEBUG nextflow.Session - Workflow process names [dsl2]: BUILD_BWAMEM2_INDEX, BUILD_CLINICAL_REPORT, SF_PREPROCESS:RUN_SAMTOOLS, ALIGN_BWAMEM2, CALL_DEEPVARIANT, INDEX_BAM, CALL_GATK, SF_CALLING:CALL_DEEPVARIANT, RUN_FASTP, RUN_SAMTOOLS, BUILD_SEQUENCE_DICTIONARY, INDEX_CLINVAR_RESOURCE, SF_UPSTREAM:BUILD_FASTA_INDEX, RUN_GENEALOGY_STACK, ALIGN_MINIMAP2, SF_ALIGNMENT:ALIGN_MINIMAP2, SF_ENDPOINTS:RUN_CLINICAL_ANNOTATION, RUN_CLINICAL_ANNOTATION, RUN_CLINVAR_ANNOTATION, RUN_ELPREP, RUN_FASTQC, SF_ENDPOINTS:BUILD_CLINICAL_REPORT, BUILD_FASTA_INDEX
+May-31 09:57:33.944 [main] DEBUG nextflow.Session - Igniting dataflow network (9)
+May-31 09:57:33.948 [PathVisitor-1] DEBUG nextflow.file.PathVisitor - files for syntax: glob; folder: /media/drive_c/nf_pipes/data/; pattern: test_sample*_R{1,2}.fastq.gz; options: [checkIfExists:true]
+May-31 09:57:33.948 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > SF_UPSTREAM:BUILD_FASTA_INDEX
+May-31 09:57:33.949 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > SF_ALIGNMENT:ALIGN_MINIMAP2
+May-31 09:57:33.949 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > SF_PREPROCESS:RUN_SAMTOOLS
+May-31 09:57:33.949 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > SF_CALLING:CALL_DEEPVARIANT
+May-31 09:57:33.949 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > SF_ENDPOINTS:RUN_CLINICAL_ANNOTATION
+May-31 09:57:33.949 [main] DEBUG nextflow.processor.TaskProcessor - Starting process > SF_ENDPOINTS:BUILD_CLINICAL_REPORT
+May-31 09:57:33.950 [main] DEBUG nextflow.script.ScriptRunner - Parsed script files:
+  Script_b20b8c778506c6b7: /media/drive_c/nf_pipes/subworkflows/local/calling.nf
+  Script_710164c6a751d80a: /media/drive_c/nf_pipes/subworkflows/local/endpoints.nf
+  Script_cd197dd0434f69bf: /media/drive_c/nf_pipes/subworkflows/local/alignment.nf
+  Script_42930351841b2158: /media/drive_c/nf_pipes/modules/local/reference.nf
+  Script_a61a132d38473f09: /media/drive_c/nf_pipes/modules/local/variant_calling.nf
+  Script_897ac31ee3b3a7f9: /media/drive_c/nf_pipes/main.nf
+  Script_7fa3115f74871e4a: /media/drive_c/nf_pipes/modules/local/preprocess.nf
+  Script_8cdda9f517b13d3f: /media/drive_c/nf_pipes/modules/local/genealogy.nf
+  Script_230352674b52dfb6: /media/drive_c/nf_pipes/subworkflows/local/upstream.nf
+  Script_c6ccab8c91771ca6: /media/drive_c/nf_pipes/modules/local/clinical.nf
+  Script_38878f6331acdb20: /media/drive_c/nf_pipes/subworkflows/local/preprocess.nf
+  Script_edf68c8ac00fc472: /media/drive_c/nf_pipes/modules/local/alignment.nf
+  Script_787b98e7a8caf824: /media/drive_c/nf_pipes/modules/local/qc.nf
+May-31 09:57:33.950 [main] DEBUG nextflow.script.ScriptRunner - > Awaiting termination 
+May-31 09:57:33.950 [main] DEBUG nextflow.Session - Session await
+May-31 09:57:34.058 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+May-31 09:57:34.059 [Task submitter] INFO  nextflow.Session - [8e/e972c1] Submitted process > SF_UPSTREAM:BUILD_FASTA_INDEX (reference-faidx)
+May-31 09:57:34.171 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 1; name: SF_UPSTREAM:BUILD_FASTA_INDEX (reference-faidx); status: COMPLETED; exit: 0; error: -; workDir: /media/drive_c/nf_pipes/work/8e/e972c126a377d0095e9df0075af1a6]
+May-31 09:57:34.172 [Task monitor] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'TaskFinalizer' minSize=10; maxSize=192; workQueue=LinkedBlockingQueue[-1]; allowCoreThreadTimeout=false
+May-31 09:57:34.191 [TaskFinalizer-1] DEBUG nextflow.util.ThreadPoolBuilder - Creating thread pool 'PublishDir' minSize=10; maxSize=192; workQueue=LinkedBlockingQueue[-1]; allowCoreThreadTimeout=false
+May-31 09:57:34.197 [TaskFinalizer-1] DEBUG nextflow.Session - Cannot invoke "groovyx.gpars.agent.Agent.send(Object)" because "this.writer" is null
+java.lang.NullPointerException: Cannot invoke "groovyx.gpars.agent.Agent.send(Object)" because "this.writer" is null
+	at nextflow.trace.TraceFileObserver.onProcessComplete(TraceFileObserver.groovy:270)
+	at nextflow.Session$_notifyTaskComplete_lambda34.doCall(Session.groovy:1063)
+	at nextflow.Session.notifyEvent(Session.groovy:1138)
+	at nextflow.Session.notifyTaskComplete(Session.groovy:1063)
+	at nextflow.processor.TaskPollingMonitor.finalizeTask(TaskPollingMonitor.groovy:699)
+	at nextflow.processor.TaskPollingMonitor.safeFinalizeTask(TaskPollingMonitor.groovy:686)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:343)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:328)
+	at groovy.lang.MetaClassImpl.doInvokeMethod(MetaClassImpl.java:1333)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1088)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1007)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokePogoMethod(InvokerHelper.java:645)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokeMethod(InvokerHelper.java:628)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokeMethodSafe(InvokerHelper.java:82)
+	at nextflow.processor.TaskPollingMonitor$_checkTaskStatus_lambda8.doCall(TaskPollingMonitor.groovy:676)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+May-31 09:57:34.201 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+May-31 09:57:34.201 [Task submitter] INFO  nextflow.Session - [b2/66f41a] Submitted process > SF_ALIGNMENT:ALIGN_MINIMAP2 (test_sample)
+May-31 09:57:34.314 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 2; name: SF_ALIGNMENT:ALIGN_MINIMAP2 (test_sample); status: COMPLETED; exit: 0; error: -; workDir: /media/drive_c/nf_pipes/work/b2/66f41aee7a4daf9d46c4baef43f6ef]
+May-31 09:57:34.322 [TaskFinalizer-2] DEBUG nextflow.Session - Cannot invoke "groovyx.gpars.agent.Agent.send(Object)" because "this.writer" is null
+java.lang.NullPointerException: Cannot invoke "groovyx.gpars.agent.Agent.send(Object)" because "this.writer" is null
+	at nextflow.trace.TraceFileObserver.onProcessComplete(TraceFileObserver.groovy:270)
+	at nextflow.Session$_notifyTaskComplete_lambda34.doCall(Session.groovy:1063)
+	at nextflow.Session.notifyEvent(Session.groovy:1138)
+	at nextflow.Session.notifyTaskComplete(Session.groovy:1063)
+	at nextflow.processor.TaskPollingMonitor.finalizeTask(TaskPollingMonitor.groovy:699)
+	at nextflow.processor.TaskPollingMonitor.safeFinalizeTask(TaskPollingMonitor.groovy:686)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:343)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:328)
+	at groovy.lang.MetaClassImpl.doInvokeMethod(MetaClassImpl.java:1333)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1088)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1007)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokePogoMethod(InvokerHelper.java:645)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokeMethod(InvokerHelper.java:628)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokeMethodSafe(InvokerHelper.java:82)
+	at nextflow.processor.TaskPollingMonitor$_checkTaskStatus_lambda8.doCall(TaskPollingMonitor.groovy:676)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+May-31 09:57:34.329 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+May-31 09:57:34.329 [Task submitter] INFO  nextflow.Session - [bb/08f8ee] Submitted process > SF_PREPROCESS:RUN_SAMTOOLS (test_sample)
+May-31 09:57:34.454 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 3; name: SF_PREPROCESS:RUN_SAMTOOLS (test_sample); status: COMPLETED; exit: 0; error: -; workDir: /media/drive_c/nf_pipes/work/bb/08f8eef92c3eb66f9dd4a99c0a9a9c]
+May-31 09:57:34.459 [TaskFinalizer-3] DEBUG nextflow.Session - Cannot invoke "groovyx.gpars.agent.Agent.send(Object)" because "this.writer" is null
+java.lang.NullPointerException: Cannot invoke "groovyx.gpars.agent.Agent.send(Object)" because "this.writer" is null
+	at nextflow.trace.TraceFileObserver.onProcessComplete(TraceFileObserver.groovy:270)
+	at nextflow.Session$_notifyTaskComplete_lambda34.doCall(Session.groovy:1063)
+	at nextflow.Session.notifyEvent(Session.groovy:1138)
+	at nextflow.Session.notifyTaskComplete(Session.groovy:1063)
+	at nextflow.processor.TaskPollingMonitor.finalizeTask(TaskPollingMonitor.groovy:699)
+	at nextflow.processor.TaskPollingMonitor.safeFinalizeTask(TaskPollingMonitor.groovy:686)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:343)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:328)
+	at groovy.lang.MetaClassImpl.doInvokeMethod(MetaClassImpl.java:1333)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1088)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1007)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokePogoMethod(InvokerHelper.java:645)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokeMethod(InvokerHelper.java:628)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokeMethodSafe(InvokerHelper.java:82)
+	at nextflow.processor.TaskPollingMonitor$_checkTaskStatus_lambda8.doCall(TaskPollingMonitor.groovy:676)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+May-31 09:57:34.471 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+May-31 09:57:34.472 [Task submitter] INFO  nextflow.Session - [bb/c529da] Submitted process > SF_CALLING:CALL_DEEPVARIANT (test_sample)
+May-31 09:57:34.602 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 4; name: SF_CALLING:CALL_DEEPVARIANT (test_sample); status: COMPLETED; exit: 0; error: -; workDir: /media/drive_c/nf_pipes/work/bb/c529dacb2cc191bf470ecdef126347]
+May-31 09:57:34.608 [TaskFinalizer-4] DEBUG nextflow.Session - Cannot invoke "groovyx.gpars.agent.Agent.send(Object)" because "this.writer" is null
+java.lang.NullPointerException: Cannot invoke "groovyx.gpars.agent.Agent.send(Object)" because "this.writer" is null
+	at nextflow.trace.TraceFileObserver.onProcessComplete(TraceFileObserver.groovy:270)
+	at nextflow.Session$_notifyTaskComplete_lambda34.doCall(Session.groovy:1063)
+	at nextflow.Session.notifyEvent(Session.groovy:1138)
+	at nextflow.Session.notifyTaskComplete(Session.groovy:1063)
+	at nextflow.processor.TaskPollingMonitor.finalizeTask(TaskPollingMonitor.groovy:699)
+	at nextflow.processor.TaskPollingMonitor.safeFinalizeTask(TaskPollingMonitor.groovy:686)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:343)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:328)
+	at groovy.lang.MetaClassImpl.doInvokeMethod(MetaClassImpl.java:1333)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1088)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1007)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokePogoMethod(InvokerHelper.java:645)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokeMethod(InvokerHelper.java:628)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokeMethodSafe(InvokerHelper.java:82)
+	at nextflow.processor.TaskPollingMonitor$_checkTaskStatus_lambda8.doCall(TaskPollingMonitor.groovy:676)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+May-31 09:57:34.624 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+May-31 09:57:34.625 [Task submitter] INFO  nextflow.Session - [f4/e017e7] Submitted process > SF_ENDPOINTS:RUN_CLINICAL_ANNOTATION (test_sample)
+May-31 09:57:34.751 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 5; name: SF_ENDPOINTS:RUN_CLINICAL_ANNOTATION (test_sample); status: COMPLETED; exit: 0; error: -; workDir: /media/drive_c/nf_pipes/work/f4/e017e7b28a1b1ff89c25b64b96c811]
+May-31 09:57:34.756 [TaskFinalizer-5] DEBUG nextflow.Session - Cannot invoke "groovyx.gpars.agent.Agent.send(Object)" because "this.writer" is null
+java.lang.NullPointerException: Cannot invoke "groovyx.gpars.agent.Agent.send(Object)" because "this.writer" is null
+	at nextflow.trace.TraceFileObserver.onProcessComplete(TraceFileObserver.groovy:270)
+	at nextflow.Session$_notifyTaskComplete_lambda34.doCall(Session.groovy:1063)
+	at nextflow.Session.notifyEvent(Session.groovy:1138)
+	at nextflow.Session.notifyTaskComplete(Session.groovy:1063)
+	at nextflow.processor.TaskPollingMonitor.finalizeTask(TaskPollingMonitor.groovy:699)
+	at nextflow.processor.TaskPollingMonitor.safeFinalizeTask(TaskPollingMonitor.groovy:686)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:343)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:328)
+	at groovy.lang.MetaClassImpl.doInvokeMethod(MetaClassImpl.java:1333)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1088)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1007)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokePogoMethod(InvokerHelper.java:645)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokeMethod(InvokerHelper.java:628)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokeMethodSafe(InvokerHelper.java:82)
+	at nextflow.processor.TaskPollingMonitor$_checkTaskStatus_lambda8.doCall(TaskPollingMonitor.groovy:676)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+May-31 09:57:34.777 [Task submitter] DEBUG n.executor.local.LocalTaskHandler - Launch cmd line: /bin/bash -ue .command.run
+May-31 09:57:34.778 [Task submitter] INFO  nextflow.Session - [23/8558cc] Submitted process > SF_ENDPOINTS:BUILD_CLINICAL_REPORT (test_sample)
+May-31 09:57:34.902 [Task monitor] DEBUG n.processor.TaskPollingMonitor - Task completed > TaskHandler[id: 6; name: SF_ENDPOINTS:BUILD_CLINICAL_REPORT (test_sample); status: COMPLETED; exit: 0; error: -; workDir: /media/drive_c/nf_pipes/work/23/8558cca1a2260912ff7f0dfc7911f3]
+May-31 09:57:34.906 [main] DEBUG nextflow.Session - Session await > all processes finished
+May-31 09:57:34.906 [TaskFinalizer-6] DEBUG nextflow.Session - Cannot invoke "groovyx.gpars.agent.Agent.send(Object)" because "this.writer" is null
+java.lang.NullPointerException: Cannot invoke "groovyx.gpars.agent.Agent.send(Object)" because "this.writer" is null
+	at nextflow.trace.TraceFileObserver.onProcessComplete(TraceFileObserver.groovy:270)
+	at nextflow.Session$_notifyTaskComplete_lambda34.doCall(Session.groovy:1063)
+	at nextflow.Session.notifyEvent(Session.groovy:1138)
+	at nextflow.Session.notifyTaskComplete(Session.groovy:1063)
+	at nextflow.processor.TaskPollingMonitor.finalizeTask(TaskPollingMonitor.groovy:699)
+	at nextflow.processor.TaskPollingMonitor.safeFinalizeTask(TaskPollingMonitor.groovy:686)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.codehaus.groovy.reflection.CachedMethod.invoke(CachedMethod.java:343)
+	at groovy.lang.MetaMethod.doMethodInvoke(MetaMethod.java:328)
+	at groovy.lang.MetaClassImpl.doInvokeMethod(MetaClassImpl.java:1333)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1088)
+	at groovy.lang.MetaClassImpl.invokeMethod(MetaClassImpl.java:1007)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokePogoMethod(InvokerHelper.java:645)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokeMethod(InvokerHelper.java:628)
+	at org.codehaus.groovy.runtime.InvokerHelper.invokeMethodSafe(InvokerHelper.java:82)
+	at nextflow.processor.TaskPollingMonitor$_checkTaskStatus_lambda8.doCall(TaskPollingMonitor.groovy:676)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:572)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+May-31 09:57:35.003 [Task monitor] DEBUG n.processor.TaskPollingMonitor - <<< barrier arrives (monitor: local) - terminating tasks monitor poll loop
+May-31 09:57:35.004 [main] DEBUG nextflow.Session - Session await > all barriers passed
+May-31 09:57:35.007 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'TaskFinalizer' shutdown completed (hard=false)
+May-31 09:57:35.007 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'PublishDir' shutdown completed (hard=false)
+May-31 09:57:35.009 [main] INFO  nextflow.Nextflow - nf-prism finished with status: SUCCESS
+May-31 09:57:35.009 [main] INFO  nextflow.Nextflow - Published results: /media/drive_c/nf_pipes/results/test
+May-31 09:57:35.014 [main] DEBUG n.trace.WorkflowStatsObserver - Workflow completed > WorkflowStats[succeededCount=6; failedCount=0; ignoredCount=0; cachedCount=0; pendingCount=0; submittedCount=0; runningCount=0; retriesCount=0; abortedCount=0; succeedDuration=202ms; failedDuration=0ms; cachedDuration=0ms;loadCpus=0; loadMemory=0; peakRunning=1; peakCpus=16; peakMemory=48 GB; ]
+May-31 09:57:35.014 [main] DEBUG nextflow.trace.TraceFileObserver - Workflow completed -- saving trace file
+May-31 09:57:35.015 [main] DEBUG nextflow.Session - Cannot invoke "groovyx.gpars.agent.Agent.await()" because "this.writer" is null
+java.lang.NullPointerException: Cannot invoke "groovyx.gpars.agent.Agent.await()" because "this.writer" is null
+	at nextflow.trace.TraceFileObserver.onFlowComplete(TraceFileObserver.groovy:221)
+	at nextflow.Session$_notifyFlowComplete_lambda45.doCall(Session.groovy:1107)
+	at nextflow.Session.notifyEvent(Session.groovy:1138)
+	at nextflow.Session.notifyFlowComplete(Session.groovy:1107)
+	at nextflow.Session.shutdown0(Session.groovy:768)
+	at nextflow.Session.destroy(Session.groovy:713)
+	at nextflow.script.ScriptRunner.shutdown(ScriptRunner.groovy:263)
+	at nextflow.script.ScriptRunner.execute(ScriptRunner.groovy:147)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:379)
+	at nextflow.cli.Launcher.run(Launcher.groovy:513)
+	at nextflow.cli.Launcher.main(Launcher.groovy:673)
+May-31 09:57:35.015 [main] DEBUG nextflow.trace.ReportObserver - Workflow completed -- rendering execution report
+May-31 09:57:35.332 [main] WARN  nextflow.trace.ReportObserver - Failed to render execution report -- see the log file for details
+nextflow.exception.AbortOperationException: Report file already exists: /media/drive_c/nf_pipes/results/test/pipeline_info/report.html -- enable the 'report.overwrite' option in your config file to overwrite existing files
+	at nextflow.trace.TraceHelper.newFileWriter(TraceHelper.groovy:67)
+	at nextflow.trace.ReportObserver.renderHtml(ReportObserver.groovy:284)
+	at nextflow.trace.ReportObserver.onFlowComplete(ReportObserver.groovy:143)
+	at nextflow.Session$_notifyFlowComplete_lambda45.doCall(Session.groovy:1107)
+	at nextflow.Session.notifyEvent(Session.groovy:1138)
+	at nextflow.Session.notifyFlowComplete(Session.groovy:1107)
+	at nextflow.Session.shutdown0(Session.groovy:768)
+	at nextflow.Session.destroy(Session.groovy:713)
+	at nextflow.script.ScriptRunner.shutdown(ScriptRunner.groovy:263)
+	at nextflow.script.ScriptRunner.execute(ScriptRunner.groovy:147)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:379)
+	at nextflow.cli.Launcher.run(Launcher.groovy:513)
+	at nextflow.cli.Launcher.main(Launcher.groovy:673)
+Caused by: java.nio.file.FileAlreadyExistsException: /media/drive_c/nf_pipes/results/test/pipeline_info/report.html
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:94)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.newByteChannel(UnixFileSystemProvider.java:261)
+	at java.base/java.nio.file.spi.FileSystemProvider.newOutputStream(FileSystemProvider.java:482)
+	at java.base/java.nio.file.Files.newOutputStream(Files.java:228)
+	at java.base/java.nio.file.Files.newBufferedWriter(Files.java:3001)
+	at nextflow.trace.TraceHelper.newFileWriter(TraceHelper.groovy:64)
+	... 12 common frames omitted
+May-31 09:57:35.332 [main] DEBUG nextflow.trace.TimelineObserver - Workflow completed -- rendering execution timeline
+May-31 09:57:35.364 [main] WARN  nextflow.trace.TimelineObserver - Failed to render execution timeline -- see the log file for details
+nextflow.exception.AbortOperationException: Timeline file already exists: /media/drive_c/nf_pipes/results/test/pipeline_info/timeline.html -- enable the 'timeline.overwrite' option in your config file to overwrite existing files
+	at nextflow.trace.TraceHelper.newFileWriter(TraceHelper.groovy:67)
+	at nextflow.trace.TimelineObserver.renderHtml(TimelineObserver.groovy:178)
+	at nextflow.trace.TimelineObserver.onFlowComplete(TimelineObserver.groovy:87)
+	at nextflow.Session$_notifyFlowComplete_lambda45.doCall(Session.groovy:1107)
+	at nextflow.Session.notifyEvent(Session.groovy:1138)
+	at nextflow.Session.notifyFlowComplete(Session.groovy:1107)
+	at nextflow.Session.shutdown0(Session.groovy:768)
+	at nextflow.Session.destroy(Session.groovy:713)
+	at nextflow.script.ScriptRunner.shutdown(ScriptRunner.groovy:263)
+	at nextflow.script.ScriptRunner.execute(ScriptRunner.groovy:147)
+	at nextflow.cli.CmdRun.run(CmdRun.groovy:379)
+	at nextflow.cli.Launcher.run(Launcher.groovy:513)
+	at nextflow.cli.Launcher.main(Launcher.groovy:673)
+Caused by: java.nio.file.FileAlreadyExistsException: /media/drive_c/nf_pipes/results/test/pipeline_info/timeline.html
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:94)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.newByteChannel(UnixFileSystemProvider.java:261)
+	at java.base/java.nio.file.spi.FileSystemProvider.newOutputStream(FileSystemProvider.java:482)
+	at java.base/java.nio.file.Files.newOutputStream(Files.java:228)
+	at java.base/java.nio.file.Files.newBufferedWriter(Files.java:3001)
+	at nextflow.trace.TraceHelper.newFileWriter(TraceHelper.groovy:64)
+	... 12 common frames omitted
+May-31 09:57:35.545 [main] DEBUG nextflow.cache.CacheDB - Closing CacheDB done
+May-31 09:57:35.559 [main] DEBUG nextflow.plugin.PluginsFacade - Using Default plugin manager
+May-31 09:57:35.561 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Enabled plugins: []
+May-31 09:57:35.561 [main] INFO  o.pf4j.DefaultPluginStatusProvider - Disabled plugins: []
+May-31 09:57:35.562 [main] INFO  org.pf4j.DefaultPluginManager - PF4J version 3.12.0 in 'deployment' mode
+May-31 09:57:35.563 [main] DEBUG nextflow.cache.CacheFactory - Using Nextflow cache factory: nextflow.cache.DefaultCacheFactory
+May-31 09:57:35.602 [main] DEBUG nextflow.cache.CacheDB - Closing CacheDB done
+May-31 09:57:35.603 [main] DEBUG nextflow.util.ThreadPoolManager - Thread pool 'FileTransfer' shutdown completed (hard=false)
+May-31 09:57:35.603 [main] DEBUG nextflow.script.ScriptRunner - > Execution complete -- Goodbye

@@ -1,0 +1,56 @@
+2026-05-30 10:59:23	-	marvelous_hawking	-	a9a7db9d78b5386a56f31cd466c7c75c	0732e824-7d2f-481b-98d7-df309a2698a6	nextflow run . --help
+2026-05-30 10:59:45	-	sharp_salas	-	a9a7db9d78b5386a56f31cd466c7c75c	be633d71-c14e-4263-8c0a-6147425b08d2	nextflow run . --help
+2026-05-30 11:00:23	-	ridiculous_golick	-	a9a7db9d78b5386a56f31cd466c7c75c	2bc3bb25-7261-41fd-89d5-c9b5732c619e	nextflow run . --help
+2026-05-30 11:00:48	-	nostalgic_einstein	-	a9a7db9d78b5386a56f31cd466c7c75c	75579eb4-6f4c-4fb4-9644-d6d36ab9e8ea	nextflow run . --help
+2026-05-30 11:01:29	2.2s	ridiculous_goldwasser	OK	a9a7db9d78b5386a56f31cd466c7c75c	6bc23317-a7a7-489a-88f1-531376e2a4de	nextflow run . --help
+2026-05-30 20:46:11	1.8s	spontaneous_khorana	OK	1a96ad5acc827a5f2f6b6ba30264046f	2d6a4706-4f01-4ebc-9084-eb3e3f15268e	nextflow run . --help
+2026-05-30 20:46:27	-	reverent_boyd	-	1a96ad5acc827a5f2f6b6ba30264046f	af15edfb-632a-43bc-ab9d-a802c4d9df38	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-30 20:46:47	-	pedantic_agnesi	-	1a96ad5acc827a5f2f6b6ba30264046f	12ba2cd9-252b-4d00-9fc9-9bbae2dedfde	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-30 20:48:01	-	insane_goodall	-	1a96ad5acc827a5f2f6b6ba30264046f	c2cd54a5-8a49-48bf-9f6f-b6177169ff5f	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-30 20:48:12	-	serene_goldwasser	-	1a96ad5acc827a5f2f6b6ba30264046f	24bb7452-cca6-4f81-b438-6ec6abcac0cc	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-30 20:48:15	1.8s	awesome_knuth	OK	1a96ad5acc827a5f2f6b6ba30264046f	2f4164c6-c9c2-43e3-9751-72208886aaa1	nextflow run . --help
+2026-05-30 20:48:57	2.4s	intergalactic_kalman	OK	ff3e7373d932e75a6b2e28eb2116585a	b9d9e589-2b63-4b64-89d9-4bd916fe3a3c	nextflow run . --help
+2026-05-30 20:49:01	-	scruffy_brahmagupta	-	ff3e7373d932e75a6b2e28eb2116585a	ab470683-51d6-4f3c-9f61-d22b836c51a6	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-30 21:39:40	1.3s	naughty_perlman	OK	cb1c7d18f3df0ea1ec14b1e01c84de1b	5fdd255f-67da-4350-983b-a1360719533d	nextflow run /tmp/nf_pair_test.nf
+2026-05-30 21:40:01	1.6s	mighty_heyrovsky	OK	0ce833e2a13b3e601fe716260e7a7481	ad43b669-7d95-417e-aa0f-53cd760512d5	nextflow run /tmp/nf_pair_test_abs.nf
+2026-05-30 21:40:20	1.5s	kickass_ramanujan	OK	0ce833e2a13b3e601fe716260e7a7481	4a639234-f0c0-4330-91f8-9ec5938ea4e0	nextflow run /tmp/nf_pair_test_abs.nf
+2026-05-30 21:40:28	1.1s	nostalgic_woese	OK	322a1e2c6b21bdf26f39668ae18b6977	601b2c93-f413-4838-a699-e73e1e504d28	nextflow run /tmp/nf_path_test.nf
+2026-05-30 21:40:41	-	distracted_moriondo	-	ff3e7373d932e75a6b2e28eb2116585a	c557e9f6-ebcd-4d4d-81d5-5de82468796a	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-30 22:25:18	1.5s	cheeky_wright	OK	30314d9cd096977fd41918be012ccafb	56529def-a5b1-4ca6-b309-8438f95290e4	nextflow run /tmp/nf_pair_map_test.nf
+2026-05-30 22:25:42	-	elegant_gutenberg	-	b85a4072f6de9bd5e893de0fa743420b	ed8ab33b-7a0f-4fbd-8d03-da4bbdd81f3d	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-30 22:26:29	-	sad_mayer	-	eaae5502bbf7f8e9f02bc6b7059f27fc	ddde6784-a8d1-4ade-bbaf-a68d50c5e487	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-30 22:26:37	-	scruffy_magritte	-	eaae5502bbf7f8e9f02bc6b7059f27fc	d4ed5772-85d2-4851-b8a8-4ad5576c29bd	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-30 22:26:40	-	gloomy_hamilton	-	eaae5502bbf7f8e9f02bc6b7059f27fc	a9c3aa8a-9b66-4f87-88de-0476b073521a	nextflow run . -profile test -stub-run --workflow genealogy --caller haplotypecaller
+2026-05-31 08:53:49	1.5s	spontaneous_baekeland	OK	eaae5502bbf7f8e9f02bc6b7059f27fc	245546e0-e528-4668-9c8b-f1f137fece04	nextflow run . --help
+2026-05-31 08:53:52	-	disturbed_baekeland	-	eaae5502bbf7f8e9f02bc6b7059f27fc	0e288ab5-e959-47df-a421-da5a88f0cba9	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 08:54:02	1.8s	chaotic_lumiere	OK	eaae5502bbf7f8e9f02bc6b7059f27fc	70c828d4-4c1d-4f4f-9ea9-1257b8a4692e	nextflow run . --help
+2026-05-31 08:54:05	-	insane_mcnulty	-	eaae5502bbf7f8e9f02bc6b7059f27fc	9dbac127-9213-4465-b440-c6281784dad8	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 08:55:03	1.2s	loquacious_linnaeus	OK	744c16a564dac7eddd7f9ba852fde520	7bd20cea-4fd3-4f07-9555-691ae27ed6e5	nextflow run /tmp/nf_bisect_samples.nf
+2026-05-31 08:55:34	-	distraught_pesquet	-	eaae5502bbf7f8e9f02bc6b7059f27fc	b52a1f47-b33f-4fec-a286-c3f1e82175a5	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 08:57:26	1.8s	loving_ekeblad	OK	3bdcdf6f4e014c6dfcccc57cae615efc	bb656ced-bf00-4bf5-9b36-b6cc452fb4f5	nextflow run . --help
+2026-05-31 08:57:29	-	mad_rubens	-	3bdcdf6f4e014c6dfcccc57cae615efc	81b0fa6d-fee3-4517-a1cb-75a2a21ed9a8	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 08:58:10	1.4s	soggy_austin	OK	f7b113b0cbd964abff5f245934fcfc58	e2f31d0a-dde1-4d74-afb6-88e842c8c678	nextflow run . --help
+2026-05-31 08:58:13	-	extravagant_hodgkin	-	f7b113b0cbd964abff5f245934fcfc58	1e365737-311f-49fa-8f80-23211a5330f5	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 08:59:07	-	tender_albattani	-	c97a1a2dd87b86eedd0278913ecb728f	59e9e44f-53a1-4700-a950-c61fe781ac67	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 08:59:36	-	admiring_payne	-	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	63f2c1f6-4dab-4b9b-be08-1dfcb7d87de9	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 09:00:13	-	curious_hilbert	-	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	e267c892-c021-4f53-a879-74092e8db8c0	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 09:00:52	-	reverent_yonath	-	fecf641e6ced0a2c80c6da7efc53c60e	00953e65-9311-4a5c-9cc7-5cc8da1668c3	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 09:01:38	-	goofy_bell	-	fecf641e6ced0a2c80c6da7efc53c60e	5d4bfa1c-8df9-4f19-a89b-99775e134938	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 09:01:54	-	agitated_heyrovsky	-	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	98f56ee0-26f9-43f0-882f-8ab91e83bcb1	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 09:50:43	1.8s	hungry_allen	ERR	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	71eaccdd-9b08-4fb1-a3bb-e8e5a79a8471	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 09:51:16	2.2s	condescending_meitner	ERR	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	f1b640c7-d3d6-402d-8b5b-883e76f8a499	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 09:51:19	2.7s	happy_mcnulty	ERR	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	baf7cca5-dfe2-49f7-9c35-83e698169f71	nextflow run . -profile test -stub-run --workflow genealogy --caller haplotypecaller
+2026-05-31 09:51:23	2.2s	exotic_gautier	ERR	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	910510fd-5b60-495c-bdc5-d4833974b6af	nextflow run . -profile test -stub-run --workflow clinical --caller deepvariant
+2026-05-31 09:53:10	2.1s	hungry_picasso	ERR	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	d0eb02c8-0f9f-47c4-8829-342a6bd32858	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 09:53:24	1.9s	amazing_majorana	ERR	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	6ba7b4b0-6fe7-4539-bc8b-64d80e19df67	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 09:53:27	2.4s	chaotic_hugle	ERR	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	a84b23c9-2394-428f-bb7f-e2f7af6b7f94	nextflow run . -profile test -stub-run --workflow genealogy --caller haplotypecaller
+2026-05-31 09:53:31	2s	exotic_leavitt	ERR	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	f89c1334-ad13-458c-b152-9d580013305a	nextflow run . -profile test -stub-run --workflow clinical --caller deepvariant
+2026-05-31 09:53:38	2.1s	cheesy_mayer	ERR	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	0fcc2adf-3557-4d9b-8108-94e753713222	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 09:55:51	2.9s	irreverent_meninsky	ERR	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	c4cc1962-3bb5-4793-a9d3-cf4a4977cc2b	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 09:55:55	3.4s	agitated_mahavira	OK	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	fc6cc8d0-66fb-4106-887e-d3c6520fa6e0	nextflow run . -profile test -stub-run --workflow genealogy --caller haplotypecaller
+2026-05-31 09:56:00	3s	thirsty_morse	ERR	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	6097525c-627a-4806-9d08-0873a2899754	nextflow run . -profile test -stub-run --workflow clinical --caller deepvariant
+2026-05-31 09:56:08	3.1s	naughty_liskov	ERR	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	e7ef6f17-0984-4074-ab39-d972dd874c9f	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 09:56:16	3s	suspicious_visvesvaraya	ERR	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	71df907b-5dde-493f-9a69-06cf09660e51	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 09:57:23	3.6s	reverent_joliot	OK	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	9d81d6f3-b997-4748-8593-1fd80d6db8af	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
+2026-05-31 09:57:28	3s	wise_gilbert	OK	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	bf9e244e-1d18-45b7-9f90-528cc233a564	nextflow run . -profile test -stub-run --workflow genealogy --caller haplotypecaller
+2026-05-31 09:57:32	3.6s	stoic_rubens	OK	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	efce601a-cbbd-45e1-b515-824b701fad26	nextflow run . -profile test -stub-run --workflow clinical --caller deepvariant
