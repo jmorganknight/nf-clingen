@@ -1,4 +1,5 @@
 include { INDEX_CLINVAR_RESOURCE; RUN_CLINICAL_ANNOTATION; RUN_CLINVAR_ANNOTATION; BUILD_CLINICAL_REPORT } from '../../modules/local/clinical'
+include { FILTER_BY_PHENOTYPE } from '../../modules/local/phenotype'
 include { RUN_GENEALOGY_STACK } from '../../modules/local/genealogy'
 
 workflow SF_ENDPOINTS {
@@ -22,7 +23,25 @@ workflow SF_ENDPOINTS {
                 log.info 'Clinical annotations: using intrinsic VCF annotations only.'
                 clinical_annotation_ch = RUN_CLINICAL_ANNOTATION(called_vcf_ch).annotation
             }
-            BUILD_CLINICAL_REPORT(clinical_annotation_ch)
+            
+            // Apply phenotype filtering if patient phenotype is provided
+            def report_input_ch
+            if( params.patient_phenotype ) {
+                log.info "Phenotype filtering enabled: ${params.patient_phenotype}"
+                def phenotype_map_file = file(params.phenotype_gene_map, checkIfExists: true)
+                def phenotype_filter_input = clinical_annotation_ch
+                    .map { row -> tuple(row[0], row[3], params.patient_phenotype, phenotype_map_file) }
+                FILTER_BY_PHENOTYPE(phenotype_filter_input)
+                // Build report input from phenotype-filtered results
+                report_input_ch = clinical_annotation_ch
+                    .join(FILTER_BY_PHENOTYPE.out.filtered)
+                    .map { row -> tuple(row[0], row[1], row[2], row[4], row[3]) }
+            }
+            else {
+                report_input_ch = clinical_annotation_ch
+            }
+            
+            BUILD_CLINICAL_REPORT(report_input_ch)
             break
         case 'genealogy':
             log.info 'Endpoint routing: genealogy phasing/imputation stub selected.'

@@ -54,3 +54,7 @@
 2026-05-31 09:57:23	3.6s	reverent_joliot	OK	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	9d81d6f3-b997-4748-8593-1fd80d6db8af	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller
 2026-05-31 09:57:28	3s	wise_gilbert	OK	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	bf9e244e-1d18-45b7-9f90-528cc233a564	nextflow run . -profile test -stub-run --workflow genealogy --caller haplotypecaller
 2026-05-31 09:57:32	3.6s	stoic_rubens	OK	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	efce601a-cbbd-45e1-b515-824b701fad26	nextflow run . -profile test -stub-run --workflow clinical --caller deepvariant
+2026-05-31 22:56:49	-	serene_majorana	-	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	18f10e1a-7341-4b3b-a89b-9e2de205365e	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller --patient_phenotype 'HP:0002664'
+2026-05-31 22:56:55	-	distraught_kare	-	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	1d3fec6f-7221-4b86-99c1-749588789355	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller --patient_phenotype 'HP:0002664'
+2026-05-31 22:57:14	3.6s	ecstatic_pare	OK	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	55c8413a-9e0b-42d5-bd4c-a36af09339e7	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller --patient_phenotype 'HP:0002664'
+2026-05-31 22:57:22	2.9s	extravagant_thompson	OK	ab1dcf7eeea3fb2c5ec9a7f09c67aabb	ee911bfb-c3cf-4389-989e-2d23ac497bd6	nextflow run . -profile test -stub-run --workflow clinical --caller haplotypecaller

@@ -46,6 +46,25 @@ nextflow run . \
   --skip_qc true
 ```
 
+**Clinical run with patient phenotype filtering:**
+
+```bash
+nextflow run . \
+  -profile docker \
+  --workflow clinical \
+  --caller haplotypecaller \
+  --patient_phenotype "HP:0002664"
+```
+
+The `patient_phenotype` parameter filters reported variants to genes relevant to the patient's phenotype/disease. Phenotypes use HPO (Human Phenotype Ontology) term IDs. Common examples:
+
+- `HP:0002664` - Neoplasm (cancer)
+- `HP:0001674` - Heart murmur (cardiovascular)
+- `HP:0001250` - Seizures (neurological)
+- `HP:0000365` - Hearing impairment
+
+Customize the gene mapping by editing [data/phenotype_gene_map.tsv](data/phenotype_gene_map.tsv).
+
 Validate parameters only:
 
 ```bash

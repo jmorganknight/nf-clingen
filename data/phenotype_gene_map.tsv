@@ -1,0 +1,26 @@
+# Phenotype-to-Gene Mapping for Clinical Filtering
+# Format: phenotype_id\tphenotype_name\tgenes (comma-separated)
+# This is a starter reference; add/customize based on your patient population
+
+# Cancer predisposition syndromes
+HP:0002664	Neoplasm	BRCA1,BRCA2,TP53,MLH1,MSH2,MSH6,PTEN,CDH1,CDKN2A
+HP:0100013	Neoplasm of stomach	CDH1,TP53
+HP:0007004	Diffuse large cell lymphoma	BRCA1,TP53,MYC
+HP:0001513	Obesity	FTO,LEPR,MC4R,POMC,PCSK1
+
+# Cardiovascular disease
+HP:0001674	Heart murmur	MYH7,MYBPC3,TNNT2,TPM1,ACTC1,MYL2
+HP:0001629	Ventricular septal defect	NKX2-5,TBX5,GATA4,HAND2
+HP:0001677	Coronary artery disease	LPA,PCSK9,APOB,APOE,LDLR
+
+# Neurological
+HP:0001250	Seizures	SCN1A,PCDH19,GABRG2,SLC9A6,CDKL5
+HP:0002069	Tonic-clonic seizures	SCN1A,SCN1B,GABRA1,GABRB2
+HP:0001268	Intellectual disability	CDKL5,PCDH19,ARX,SLC9A6,MECP2
+
+# Metabolic
+HP:0000365	Hearing impairment	GJB2,GJB6,MITOCHONDRIAL_VARIANTS
+HP:0000218	High palate	FGFR1,FGFR2,FGFR3,MSX1,PAX9
+
+# Add more phenotypes as needed (HPO term format)
+# Full HPO database: http://www.human-phenotype-ontology.org/
