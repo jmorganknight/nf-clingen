@@ -125,7 +125,7 @@ def samplesChannelFromSheet(sheetPath) {
 def renderHelp() {
     def spec = schema()
     def lines = []
-    lines << 'nf-prism'
+    lines << 'nf-clingen'
     lines << ''
     lines << spec.description.toString()
     lines << ''
@@ -146,7 +146,7 @@ def renderHelp() {
 def runtimeBanner() {
     """
     ==============================================
-                     nf-prism runtime
+                     nf-clingen runtime
     ==============================================
     Reads pattern         : ${params.reads}
     Reference FASTA       : ${params.reference}
@@ -194,6 +194,6 @@ workflow {
 }
 
 workflow.onComplete {
-    log.info "nf-prism finished with status: ${workflow.success ? 'SUCCESS' : 'FAILED'}"
+    log.info "nf-clingen finished with status: ${workflow.success ? 'SUCCESS' : 'FAILED'}"
     log.info "Published results: ${params.outdir}"
 }

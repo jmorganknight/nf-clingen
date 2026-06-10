@@ -1,4 +1,4 @@
-name: nf-prism-smoke
+name: nf-clingen-smoke
 
 on:
   push:

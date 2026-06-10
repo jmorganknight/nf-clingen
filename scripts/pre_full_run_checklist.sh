@@ -17,7 +17,7 @@ if [[ -z "${SCRATCH_DIR}" ]]; then
   SCRATCH_DIR="${ROOT_DIR}"
 fi
 
-echo "== nf-prism pre-full-run checklist =="
+echo "== nf-clingen pre-full-run checklist =="
 echo "workspace: ${ROOT_DIR}"
 echo
 

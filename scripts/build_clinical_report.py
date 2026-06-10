@@ -77,7 +77,7 @@ def main() -> None:
 <html lang=\"en\">
 <head>
   <meta charset=\"utf-8\">
-  <title>nf-prism clinical report: {html.escape(sample_id)}</title>
+  <title>nf-clingen clinical report: {html.escape(sample_id)}</title>
   <style>
     @page {{ size: A4; margin: 16mm; }}
     body {{ font-family: DejaVu Sans, sans-serif; color: #1e293b; font-size: 10pt; line-height: 1.45; }}
@@ -95,7 +95,7 @@ def main() -> None:
 </head>
 <body>
   <div class=\"hero\">
-    <h1>nf-prism clinical variant triage</h1>
+    <h1>nf-clingen clinical variant triage</h1>
     <div>Sample: <strong>{html.escape(sample_id)}</strong></div>
     <div>Annotated VCF: {html.escape(Path(args.annotated_vcf).name)}</div>
     <div class=\"small\">Local automated triage for review workflows. This is not a substitute for molecular pathology sign-out or regulated ACMG adjudication.</div>
@@ -110,7 +110,7 @@ def main() -> None:
 
   <div class=\"section\">
     <h2>Executive summary</h2>
-    <p>The callset was routed through the nf-prism clinical branch and prioritized with a local open-source annotation stack. Variants carrying pathogenic ClinVar evidence or high-impact functional consequences are promoted into the review table below.</p>
+    <p>The callset was routed through the nf-clingen clinical branch and prioritized with a local open-source annotation stack. Variants carrying pathogenic ClinVar evidence or high-impact functional consequences are promoted into the review table below.</p>
   </div>
 
   <div class=\"section\">

@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "nf-prism parameter schema",
-  "description": "Schema for the nf-prism multi-omic routing workflow.",
+  "title": "nf-clingen parameter schema",
+  "description": "Schema for the nf-clingen clinical-genealogy routing workflow.",
   "type": "object",
   "required": [
     "reference",
@@ -37,7 +37,7 @@
     "scratch_dir": {
       "type": "string",
       "default": null,
-      "description": "Optional fast local scratch path. When set, Nextflow workDir becomes <scratch_dir>/nf-prism-work."
+      "description": "Optional fast local scratch path. When set, Nextflow workDir becomes <scratch_dir>/nf-clingen-work."
     },
     "skip_qc": {
       "type": "boolean",
@@ -151,13 +151,13 @@
     },
     "aws_batch_queue": {
       "type": "string",
-      "default": "nf-prism-batch-queue",
+      "default": "nf-clingen-batch-queue",
       "description": "AWS Batch job queue name used by the awsbatch profile."
     },
     "aws_workdir": {
       "type": "string",
       "default": null,
-      "description": "S3 work directory for Nextflow cache in AWS mode (for example s3://my-bucket/nf-prism-work). Required in aws mode."
+      "description": "S3 work directory for Nextflow cache in AWS mode (for example s3://my-bucket/nf-clingen-work). Required in aws mode."
     },
     "vqsr_snp_resource": {
       "type": "string",

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Comprehensive preflight checks before running nf-prism
+# Comprehensive preflight checks before running nf-clingen
 # Validates: Java, Nextflow, Docker, reference files, disk space, memory, parameters
 set -euo pipefail
 
@@ -26,7 +26,7 @@ function log_error() {
 }
 
 echo "========================================"
-echo "  nf-prism Preflight Validation"
+echo "  nf-clingen Preflight Validation"
 echo "========================================"
 echo "workspace: ${ROOT_DIR}"
 echo

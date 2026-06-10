@@ -1,4 +1,4 @@
-# Release Checklist for nf-prism
+# Release Checklist for nf-clingen
 
 Use this checklist before tagging a new release. All steps should be completed and verified.
 
@@ -100,15 +100,15 @@ Use this checklist before tagging a new release. All steps should be completed a
   git push origin --tags
   ```
 
-- [ ] Verify tag appears in GitHub: https://github.com/[owner]/nf-prism/releases
+- [ ] Verify tag appears in GitHub: https://github.com/[owner]/nf-clingen/releases
 
 ## Post-Release Verification
 
 - [ ] Clone a fresh copy and run smoke tests
   ```bash
   cd /tmp
-  git clone https://github.com/[owner]/nf-prism.git nf-prism-test
-  cd nf-prism-test
+  git clone https://github.com/[owner]/nf-clingen.git nf-clingen-test
+  cd nf-clingen-test
   git checkout v0.2.0
   nextflow run . -profile test -stub-run --workflow clinical --caller deepvariant
   ```

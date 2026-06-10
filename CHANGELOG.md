@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to nf-prism are documented in this file. Follow [Semantic Versioning](https://semver.org/).
+All notable changes to nf-clingen are documented in this file. Follow [Semantic Versioning](https://semver.org/).
 
 ## [0.2.0] - 2025-06-09
 
@@ -82,7 +82,7 @@ To adopt YAML configuration:
 
 ### Initial Release
 
-- Basic nf-prism functionality: clinical/genealogy routing with haplotypecaller/deepvariant support
+- Basic nf-clingen functionality: clinical/genealogy routing with haplotypecaller/deepvariant support
 - Local Docker-based execution with process modules for QC, alignment, calling, annotation
 - Minimal smoke-test CI with 3 routes (clinical-hc, genealogy-hc, clinical-dv)
 - Decision log documenting architecture and trade-offs
@@ -116,6 +116,6 @@ To adopt YAML configuration:
 
 ---
 
-**Latest Release**: [v0.2.0](https://github.com/[owner]/nf-prism/releases/tag/v0.2.0)  
+**Latest Release**: [v0.2.0](https://github.com/[owner]/nf-clingen/releases/tag/v0.2.0)  
 **Maintained by**: GitHub Copilot  
 **Next Planned Release**: v0.3.0 (Q3 2025) - Reproducibility locks, clinical validation profiles, audit logging

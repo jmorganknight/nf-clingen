@@ -3,7 +3,7 @@ set -euo pipefail
 
 # End-to-end HG002 benchmark run:
 # 1) Ensure HG002 reads are present (mini by default)
-# 2) Run nf-prism clinical route with DeepVariant
+# 2) Run nf-clingen clinical route with DeepVariant
 # 3) Score against HG002 GIAB truth with hap.py helper
 #
 # Usage:

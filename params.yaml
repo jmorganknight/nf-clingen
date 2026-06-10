@@ -1,5 +1,5 @@
 # ============================================================================
-# nf-prism params.yaml
+# nf-clingen params.yaml
 # ============================================================================
 # Purpose:
 #   This file is both a runnable parameter file and a descriptive reference.
@@ -7,7 +7,7 @@
 #   catalog of supported options.
 #
 # How it works:
-#   - nf-prism auto-loads params.yaml from the project root if it exists.
+#   - nf-clingen auto-loads params.yaml from the project root if it exists.
 #   - Values here override nextflow.config defaults.
 #   - CLI flags still win over params.yaml.
 #
@@ -20,7 +20,7 @@
 #   nextflow run . -profile docker,adaptive_local
 #   nextflow run . -profile docker,aggressive_local --caller deepvariant
 #   nextflow run . -profile singularity,adaptive_local
-#   nextflow run . -profile awsbatch --execution_mode aws --aws_workdir s3://my-bucket/nf-prism-work
+#   nextflow run . -profile awsbatch --execution_mode aws --aws_workdir s3://my-bucket/nf-clingen-work
 #
 # Notes:
 #   - Use plain scalars for best compatibility: true, false, 25, 96, 24h.
@@ -101,7 +101,7 @@
 
 # scratch_dir
 #   Optional fast local storage for Nextflow work files.
-#   When set, work files go to <scratch_dir>/nf-prism-work.
+#   When set, work files go to <scratch_dir>/nf-clingen-work.
 #   Recommended on NVMe or HPC scratch.
 #   Local mode only; ignored in AWS mode.
 #   Default: null
@@ -120,14 +120,14 @@
 
 # aws_batch_queue
 #   AWS Batch job queue for awsbatch profile.
-#   Default: nf-prism-batch-queue
-# aws_batch_queue: nf-prism-batch-queue
+#   Default: nf-clingen-batch-queue
+# aws_batch_queue: nf-clingen-batch-queue
 
 # aws_workdir
 #   S3 work directory required for aws execution mode.
-#   Example: s3://my-bucket/nf-prism-work
+#   Example: s3://my-bucket/nf-clingen-work
 #   Default: null
-# aws_workdir: s3://my-bucket/nf-prism-work
+# aws_workdir: s3://my-bucket/nf-clingen-work
 
 # ----------------------------------------------------------------------------
 # Workflow routing
