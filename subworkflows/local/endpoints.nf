@@ -1,6 +1,6 @@
 include { INDEX_CLINVAR_RESOURCE; RUN_CLINICAL_ANNOTATION; RUN_CLINVAR_ANNOTATION; BUILD_CLINICAL_REPORT } from '../../modules/local/clinical'
 include { FILTER_BY_PHENOTYPE } from '../../modules/local/phenotype'
-include { RUN_GENEALOGY_STACK } from '../../modules/local/genealogy'
+include { PHASE_EAGLE2; IMPUTE_BEAGLE; BUILD_GENEALOGY_MANIFEST } from '../../modules/local/genealogy'
 
 workflow SF_ENDPOINTS {
     take:
@@ -32,10 +32,11 @@ workflow SF_ENDPOINTS {
                 def phenotype_filter_input = clinical_annotation_ch
                     .map { row -> tuple(row[0], row[3], params.patient_phenotype, phenotype_map_file) }
                 FILTER_BY_PHENOTYPE(phenotype_filter_input)
-                // Build report input from phenotype-filtered results
+                // Build report input: join and use phenotype-filtered TSV (row[5]) in place of raw annotation
+                // Join result: [sample_id, vcf, vcf_tbi, annotation_tsv, summary_json, phenotype_filtered_tsv]
                 report_input_ch = clinical_annotation_ch
                     .join(FILTER_BY_PHENOTYPE.out.filtered)
-                    .map { row -> tuple(row[0], row[1], row[2], row[4], row[3]) }
+                    .map { row -> tuple(row[0], row[1], row[2], row[5], row[4]) }
             }
             else {
                 report_input_ch = clinical_annotation_ch
@@ -47,8 +48,20 @@ workflow SF_ENDPOINTS {
             BUILD_CLINICAL_REPORT(report_input_ch)
             break
         case 'genealogy':
-            log.info 'Endpoint routing: genealogy phasing/imputation stub selected.'
-            RUN_GENEALOGY_STACK(called_vcf_ch)
+            log.info 'Endpoint routing: Eagle2 phasing → Beagle imputation selected.'
+            if( !params.eagle2_genetic_map ) { error "--eagle2_genetic_map is required for workflow=genealogy" }
+            if( !params.beagle_ref_panel )   { error "--beagle_ref_panel is required for workflow=genealogy" }
+            def genetic_map_ch  = Channel.value(file(params.eagle2_genetic_map, checkIfExists: true))
+            def ref_panel_ch    = Channel.value(file(params.beagle_ref_panel, checkIfExists: true))
+            def beagle_map_ch   = params.beagle_genetic_map
+                ? Channel.value(file(params.beagle_genetic_map, checkIfExists: true))
+                : Channel.value(file("${projectDir}/data"))
+            def phased_ch   = PHASE_EAGLE2(called_vcf_ch, genetic_map_ch).phased
+            def imputed_ch  = IMPUTE_BEAGLE(phased_ch, ref_panel_ch, beagle_map_ch).imputed
+            def merged_ch   = phased_ch
+                .join(imputed_ch)
+                .map { row -> tuple(row[0], row[1], row[2], row[3], row[4]) }
+            BUILD_GENEALOGY_MANIFEST(merged_ch)
             break
     }
 }

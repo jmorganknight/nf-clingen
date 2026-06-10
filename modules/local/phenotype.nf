@@ -12,14 +12,26 @@ process FILTER_BY_PHENOTYPE {
     """
     set -euo pipefail
 
-    # Extract genes relevant to patient phenotype
-    phenotype_genes=\$(grep "^${phenotype_id}\t" "${phenotype_map}" | cut -f3)
-    
+    # Extract genes for all space-separated HP terms
+    phenotype_genes=""
+    matched_terms=""
+    for hp_term in ${phenotype_id}; do
+        genes=\$(grep "^\${hp_term}\t" "${phenotype_map}" | cut -f3 || true)
+        if [[ -n "\$genes" ]]; then
+            phenotype_genes="\${phenotype_genes},\${genes}"
+            matched_terms="\${matched_terms} \${hp_term}"
+        else
+            echo "WARNING: HP term \${hp_term} not found in gene map, skipping." >&2
+        fi
+    done
+    phenotype_genes="\${phenotype_genes#,}"  # strip leading comma
+
     if [[ -z "\$phenotype_genes" ]]; then
-        echo "WARNING: Phenotype ${phenotype_id} not found in gene map. Returning unfiltered variants." >&2
+        echo "WARNING: No HP terms matched in gene map for '${phenotype_id}'. Returning unfiltered variants." >&2
         cp "${annotation_tsv}" "${sample_id}.phenotype_filtered.tsv"
         exit 0
     fi
+    echo "Matched phenotype terms:\${matched_terms}" >&2
 
     # Convert comma-separated genes to regex for filtering
     gene_regex=\$(echo "\$phenotype_genes" | sed 's/,/|/g')

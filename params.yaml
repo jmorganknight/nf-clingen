@@ -99,6 +99,36 @@
 #   Default: ${projectDir}/results
 # outdir: results
 
+# ── Genealogy workflow resources ──────────────────────────────────────────────
+# Required when --workflow genealogy
+#
+# eagle2_genetic_map
+#   Path to directory containing Eagle2 genetic map file.
+#   Download: https://alkesgroup.broadinstitute.org/Eagle/downloads/
+#   The directory should contain: genetic_map_hg38_withX.txt.gz
+#   Example: data/eagle2/Eagle_v2.4.1/tables/
+# eagle2_genetic_map: data/eagle2/tables
+#
+# beagle_ref_panel
+#   Path to directory of per-chromosome reference panel VCFs.
+#   Expected naming: <prefix>.chr{N}.vcf.gz  (or  <prefix>.{N}.vcf.gz)
+#   Download 1000G reference panels: http://bochet.gcc.biostat.washington.edu/beagle/1000Genomes_phase3_v5a/
+#   Example: data/beagle/ref_panels/1000G_phase3
+# beagle_ref_panel: data/beagle/ref_panels
+#
+# beagle_genetic_map (optional)
+#   Path to directory of per-chromosome Beagle genetic maps for improved accuracy.
+#   Expected naming: <prefix>.chr{N}.map.gz  (or  <prefix>.{N}.map.gz)
+#   Download: https://bochet.gcc.biostat.washington.edu/beagle/genetic_maps/
+#   If omitted, Beagle runs without a genetic map.
+# beagle_genetic_map: data/beagle/genetic_maps
+#
+# beagle_jar (optional)
+#   Path to beagle.*.jar if you have a local copy outside the container.
+#   Defaults to /opt/beagle/beagle.jar inside the container.
+# beagle_jar: /opt/beagle/beagle.jar
+# ─────────────────────────────────────────────────────────────────────────────
+
 # scratch_dir
 #   Optional fast local storage for Nextflow work files.
 #   When set, work files go to <scratch_dir>/nf-clingen-work.
