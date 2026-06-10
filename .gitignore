@@ -1,0 +1,11 @@
+
+# Runtime outputs
+.nextflow/
+.nextflow.log
+.nextflow.log.*
+work/
+results/
+resume_run.log
+
+# Local editor settings
+.vscode/settings.json

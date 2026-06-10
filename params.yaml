@@ -1,0 +1,272 @@
+# ============================================================================
+# nf-prism params.yaml
+# ============================================================================
+# Purpose:
+#   This file is both a runnable parameter file and a descriptive reference.
+#   Keep the settings you use often uncommented. Leave the rest commented as a
+#   catalog of supported options.
+#
+# How it works:
+#   - nf-prism auto-loads params.yaml from the project root if it exists.
+#   - Values here override nextflow.config defaults.
+#   - CLI flags still win over params.yaml.
+#
+# Precedence:
+#   1. nextflow run . --param value
+#   2. params.yaml
+#   3. nextflow.config defaults
+#
+# Typical usage:
+#   nextflow run . -profile docker,adaptive_local
+#   nextflow run . -profile docker,aggressive_local --caller deepvariant
+#   nextflow run . -profile singularity,adaptive_local
+#   nextflow run . -profile awsbatch --execution_mode aws --aws_workdir s3://my-bucket/nf-prism-work
+#
+# Notes:
+#   - Use plain scalars for best compatibility: true, false, 25, 96, 24h.
+#   - Quoted strings are supported when needed for spaces or special characters.
+#   - Profiles are chosen on the Nextflow command line, not inside this YAML file.
+#     Container runtime options: docker, singularity, apptainer
+#     Execution profiles: adaptive_local, aggressive_local, awsbatch
+#     Validation: test (for stub-run smoke testing)
+#   - In AWS mode, set execution_mode: aws and aws_workdir: s3://...;
+#     local host caps (max_cpus/max_ram_gb/max_forks/scratch_dir) are ignored.
+# ============================================================================
+
+# ----------------------------------------------------------------------------
+# Minimal example
+# ----------------------------------------------------------------------------
+# Uncomment these if you want a compact default run definition.
+# reads: data/benchmark/giab_hg002/HG002_NIST_Illumina2x250_R{1,2}.fastq.gz
+# reference: data/GRCh38.fasta
+# workflow: clinical
+# caller: deepvariant
+# outdir: results/clinical_run
+
+# ----------------------------------------------------------------------------
+# Preset: Clinical (DeepVariant + ClinVar overlay)
+# ----------------------------------------------------------------------------
+# workflow: clinical
+# caller: deepvariant
+# aligner: minimap2
+# preprocess: samtools
+# clinvar_vcf: data/clinvar/clinvar_GRCh38_chr.vcf.gz
+# max_report_variants: 25
+
+# ----------------------------------------------------------------------------
+# Preset: Genealogy
+# ----------------------------------------------------------------------------
+# workflow: genealogy
+# caller: haplotypecaller
+# aligner: minimap2
+# preprocess: samtools
+# skip_qc: false
+
+# ----------------------------------------------------------------------------
+# Preset: Benchmark / Throughput (shared host)
+# ----------------------------------------------------------------------------
+# workflow: clinical
+# caller: deepvariant
+# max_cpus: 30
+# deepvariant_cpus: 30
+# deepvariant_memory: "96 GB"
+# scratch_dir: /scratch
+
+# ----------------------------------------------------------------------------
+# Inputs and outputs
+# ----------------------------------------------------------------------------
+# reads
+#   Paired-end FASTQ glob. Required for real runs.
+#   Required unless samplesheet is set.
+#   Default: ${projectDir}/data/*_R{1,2}.fastq.gz
+# Example:
+# reads: data/samples/*_R{1,2}.fastq.gz
+
+# samplesheet
+#   Optional CSV manifest with columns: sample_id,r1,r2
+#   Supports local paths and s3:// URIs.
+#   When set, reads is ignored.
+#   Default: null
+# samplesheet: data/samplesheet.csv
+
+# reference
+#   Reference FASTA used for alignment and calling. Required for real runs.
+#   Default: ${projectDir}/data/GRCh38.fasta
+# reference: data/GRCh38.fasta
+
+# outdir
+#   Published output directory.
+#   Default: ${projectDir}/results
+# outdir: results
+
+# scratch_dir
+#   Optional fast local storage for Nextflow work files.
+#   When set, work files go to <scratch_dir>/nf-prism-work.
+#   Recommended on NVMe or HPC scratch.
+#   Local mode only; ignored in AWS mode.
+#   Default: null
+# scratch_dir: /scratch
+
+# execution_mode
+#   Execution environment selector.
+#   Supported values: local, aws
+#   Default: local
+# execution_mode: local
+
+# aws_region
+#   AWS region for aws execution mode.
+#   Default: us-east-1
+# aws_region: us-east-1
+
+# aws_batch_queue
+#   AWS Batch job queue for awsbatch profile.
+#   Default: nf-prism-batch-queue
+# aws_batch_queue: nf-prism-batch-queue
+
+# aws_workdir
+#   S3 work directory required for aws execution mode.
+#   Example: s3://my-bucket/nf-prism-work
+#   Default: null
+# aws_workdir: s3://my-bucket/nf-prism-work
+
+# ----------------------------------------------------------------------------
+# Workflow routing
+# ----------------------------------------------------------------------------
+# workflow
+#   Selects the endpoint branch.
+#   Supported values: clinical, genealogy
+#   Default: clinical
+# workflow: clinical
+
+# caller
+#   Selects the variant caller.
+#   Supported values: haplotypecaller, deepvariant
+#   Default: haplotypecaller
+# caller: deepvariant
+
+# aligner
+#   Selects the read aligner.
+#   Supported values: minimap2, bwamem2
+#   Default: minimap2
+# aligner: minimap2
+
+# preprocess
+#   Selects BAM post-processing.
+#   Supported values: samtools, elprep
+#   Default: samtools
+# preprocess: samtools
+
+# skip_qc
+#   Skip FASTQC and FASTP when true.
+#   Supported values: true, false
+#   Default: false
+# skip_qc: false
+
+# ----------------------------------------------------------------------------
+# Clinical reporting and annotation
+# ----------------------------------------------------------------------------
+# clinvar_vcf
+#   Optional ClinVar resource for clinical overlay.
+#   Leave unset for intrinsic VCF annotations only.
+#   Default: null
+# clinvar_vcf: data/clinvar/clinvar_GRCh38_chr.vcf.gz
+
+# max_report_variants
+#   Maximum number of prioritized variants shown in report tables.
+#   Supported values: integer >= 1
+#   Default: 25
+# max_report_variants: 25
+
+# patient_phenotype
+#   Optional HPO term list used for phenotype-driven filtering.
+#   Use a quoted string when providing multiple terms.
+#   Example: "HP:0001250 HP:0012362"
+#   Default: null
+# patient_phenotype: "HP:0001250 HP:0012362"
+
+# phenotype_gene_map
+#   Gene-to-phenotype mapping TSV used when patient_phenotype is set.
+#   Default: ${projectDir}/data/phenotype_gene_map.tsv
+# phenotype_gene_map: data/phenotype_gene_map.tsv
+
+# ----------------------------------------------------------------------------
+# Runtime controls
+# ----------------------------------------------------------------------------
+# max_cpus
+#   Global CPU ceiling for local execution profiles.
+#   Local mode only; ignored in AWS mode.
+#   Default: auto-detected as host CPUs minus 2
+# max_cpus: 30
+
+# max_ram_gb
+#   Global RAM budget in GB for auto-scaled tasks.
+#   Local mode only; ignored in AWS mode.
+#   Default: auto-detected host RAM minus OS reserve
+# max_ram_gb: 478
+
+# max_forks
+#   Max concurrent tasks for local execution.
+#   Local mode only; ignored in AWS mode.
+#   Default: auto-derived from profile and CPU budget
+# max_forks: 8
+
+# ----------------------------------------------------------------------------
+# DeepVariant tuning
+# ----------------------------------------------------------------------------
+# deepvariant_cpus
+#   CPU allocation for the DeepVariant task.
+#   Default: auto-detected, capped at 48
+# deepvariant_cpus: 30
+
+# deepvariant_memory
+#   Memory allocation for DeepVariant.
+#   Must be a string with units, for example: "96 GB"
+#   Default:
+#     - base config: 40% of max_ram_gb, clamped to 32-256 GB
+#     - aggressive_local profile: 50% of max_ram_gb, clamped to 64-256 GB
+# deepvariant_memory: "96 GB"
+
+# deepvariant_time
+#   Wall-clock budget for DeepVariant.
+#   Examples: 24h, 36h, 48h
+#   Default: 24h
+# deepvariant_time: 24h
+
+# ----------------------------------------------------------------------------
+# Utility flags
+# ----------------------------------------------------------------------------
+# help
+#   Print schema-derived help and exit.
+#   Default: false
+# help: false
+
+# validate_only
+#   Validate configuration and exit without running the workflow.
+#   Default: false
+# validate_only: false
+
+# ----------------------------------------------------------------------------
+# Advanced: GATK VQSR resources
+# ----------------------------------------------------------------------------
+# These are only relevant when caller: haplotypecaller and VQSR inputs are used.
+# Leave them unset for DeepVariant runs.
+
+# vqsr_snp_resource
+#   HapMap SNP truth/training resource.
+# vqsr_snp_resource: /path/to/hapmap.vcf.gz
+
+# vqsr_omni_resource
+#   Omni 2.5 SNP training resource.
+# vqsr_omni_resource: /path/to/omni.vcf.gz
+
+# vqsr_indel_resource
+#   Mills and 1000G gold-standard indel resource.
+# vqsr_indel_resource: /path/to/mills_indels.vcf.gz
+
+# vqsr_1kg_resource
+#   1000G phase 1 SNP training resource.
+# vqsr_1kg_resource: /path/to/1000g_phase1.vcf.gz
+
+# vqsr_dbsnp_resource
+#   dbSNP known-sites resource.
+# vqsr_dbsnp_resource: /path/to/dbsnp.vcf.gz

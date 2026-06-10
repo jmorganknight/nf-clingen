@@ -22,7 +22,7 @@ def asBoolean(value) {
 }
 
 def normalizeParams() {
-    ['aligner', 'preprocess', 'caller', 'workflow'].each { key ->
+    ['aligner', 'preprocess', 'caller', 'workflow', 'execution_mode'].each { key ->
         params[key] = params[key].toString().trim().toLowerCase()
     }
 
@@ -31,13 +31,35 @@ def normalizeParams() {
     }
 
     params.max_report_variants = params.max_report_variants as Integer
+    params.deepvariant_memory = params.deepvariant_memory?.toString()
+    params.deepvariant_time = params.deepvariant_time?.toString()
     if( params.clinvar_vcf?.toString()?.trim() in ['', 'null', 'none'] ) {
         params.clinvar_vcf = null
+    }
+    if( params.samplesheet?.toString()?.trim() in ['', 'null', 'none'] ) {
+        params.samplesheet = null
     }
 }
 
 def validateParams() {
     def spec = schema()
+
+    if( !params.samplesheet && (!params.reads || params.reads.toString().trim() == '') ) {
+        throw new IllegalArgumentException("Provide either --reads or --samplesheet")
+    }
+
+    if( params.execution_mode !in ['local', 'aws'] ) {
+        throw new IllegalArgumentException("Unsupported --execution_mode '${params.execution_mode}'. Supported values: local, aws")
+    }
+
+    if( params.execution_mode == 'aws' ) {
+        if( !params.aws_workdir || !params.aws_workdir.toString().startsWith('s3://') ) {
+            throw new IllegalArgumentException("AWS mode requires --aws_workdir with an s3:// path")
+        }
+        if( params.scratch_dir ) {
+            log.warn "Ignoring --scratch_dir in AWS mode"
+        }
+    }
 
     spec.required.each { key ->
         def value = params[key]
@@ -68,7 +90,11 @@ def validateParams() {
                 break
             case 'string':
                 if( !(value instanceof CharSequence) ) {
-                    throw new IllegalArgumentException("Parameter --${key} must be a string")
+                    // Some config defaults (for example MemoryUnit/Duration) are typed
+                    // objects at parse time; normalize them to plain strings for schema
+                    // validation and consistent downstream behavior.
+                    params[key] = value.toString()
+                    value = params[key]
                 }
                 break
         }
@@ -77,6 +103,23 @@ def validateParams() {
             throw new IllegalArgumentException("Unsupported --${key} '${value}'. Supported values: ${property.enum.join(', ')}")
         }
     }
+}
+
+def samplesChannelFromSheet(sheetPath) {
+    Channel
+        .fromPath(sheetPath, checkIfExists: true)
+        .splitCsv(header: true)
+        .map { row ->
+            def sampleId = row.sample_id?.toString()?.trim()
+            def r1 = row.r1?.toString()?.trim()
+            def r2 = row.r2?.toString()?.trim()
+
+            if( !sampleId || !r1 || !r2 ) {
+                throw new IllegalArgumentException("Samplesheet requires columns sample_id,r1,r2 with non-empty values")
+            }
+
+            tuple(sampleId, [file(r1, checkIfExists: true), file(r2, checkIfExists: true)])
+        }
 }
 
 def renderHelp() {
@@ -137,8 +180,9 @@ workflow {
         return
     }
 
-    def samples_ch = Channel
-        .fromFilePairs(params.reads, checkIfExists: true)
+    def samples_ch = params.samplesheet
+        ? samplesChannelFromSheet(params.samplesheet)
+        : Channel.fromFilePairs(params.reads, checkIfExists: true)
 
     def reference_source_ch = Channel.of(file(params.reference, checkIfExists: true))
 

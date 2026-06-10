@@ -7,18 +7,41 @@ on:
   pull_request:
 
 jobs:
+  lint-schema:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate nextflow_schema.json
+        run: |
+          python3 -m json.tool nextflow_schema.json > /dev/null && \
+          echo "✓ Schema is valid JSON"
+
   smoke:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        run:
-          - name: clinical-hc
-            args: "-profile test --workflow clinical --caller haplotypecaller"
-          - name: genealogy-hc
-            args: "-profile test --workflow genealogy --caller haplotypecaller"
-          - name: clinical-dv
-            args: "-profile test --workflow clinical --caller deepvariant"
+        include:
+          # Clinical precision - HaplotypeCaller + minimap2
+          - name: clinical-hc-minimap2
+            args: "-profile test --workflow clinical --caller haplotypecaller --aligner minimap2"
+          # Clinical precision - HaplotypeCaller + bwamem2
+          - name: clinical-hc-bwamem2
+            args: "-profile test --workflow clinical --caller haplotypecaller --aligner bwamem2"
+          # Clinical high-accuracy - DeepVariant + minimap2
+          - name: clinical-dv-minimap2
+            args: "-profile test --workflow clinical --caller deepvariant --aligner minimap2"
+          # Clinical high-accuracy - DeepVariant + bwamem2
+          - name: clinical-dv-bwamem2
+            args: "-profile test --workflow clinical --caller deepvariant --aligner bwamem2"
+          # Genealogy - HaplotypeCaller (primary pathway)
+          - name: genealogy-hc-minimap2
+            args: "-profile test --workflow genealogy --caller haplotypecaller --aligner minimap2"
+          # Genealogy - DeepVariant (validation pathway)
+          - name: genealogy-dv-minimap2
+            args: "-profile test --workflow genealogy --caller deepvariant --aligner minimap2"
 
     steps:
       - name: Checkout
@@ -36,9 +59,27 @@ jobs:
           version: '25.04.3'
 
       - name: Validate config
-        run: nextflow config
+        run: |
+          nextflow config -profile test && \
+          echo "✓ Config validates successfully"
 
-      - name: Run ${{ matrix.run.name }} stub smoke
+      - name: Validate parameters
+        run: |
+          nextflow run . --validate_only true -profile test && \
+          echo "✓ Parameters validate successfully"
+
+      - name: Run ${{ matrix.name }} stub smoke
         run: |
           set -euo pipefail
-          nextflow run . -stub-run -resume ${{ matrix.run.args }}
+          echo "Testing: ${{ matrix.name }}"
+          nextflow run . -stub-run -resume ${{ matrix.args }}
+          echo "✓ ${{ matrix.name }} completed successfully"
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: nextflow-logs-${{ matrix.name }}
+          path: .nextflow.log*
+          retention-days: 7
+

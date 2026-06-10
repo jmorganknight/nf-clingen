@@ -4,30 +4,40 @@
   "description": "Schema for the nf-prism multi-omic routing workflow.",
   "type": "object",
   "required": [
-    "reads",
     "reference",
     "outdir",
     "skip_qc",
     "aligner",
     "preprocess",
     "caller",
-    "workflow"
+    "workflow",
+    "execution_mode"
   ],
   "properties": {
     "reads": {
       "type": "string",
       "default": "${projectDir}/data/*_R{1,2}.fastq.gz",
-      "description": "Glob pattern for paired-end FASTQ inputs."
+      "description": "Glob pattern for paired-end FASTQ inputs. Required unless --samplesheet is supplied."
+    },
+    "samplesheet": {
+      "type": "string",
+      "default": null,
+      "description": "Optional CSV manifest with columns sample_id,r1,r2. Supports local or s3:// paths. When set, --reads is ignored."
     },
     "reference": {
       "type": "string",
       "default": "${projectDir}/data/GRCh38.fasta",
-      "description": "Reference FASTA used for alignment and calling."
+      "description": "Reference FASTA used for alignment and variant calling."
     },
     "outdir": {
       "type": "string",
       "default": "${projectDir}/results",
-      "description": "Published output directory."
+      "description": "Published output directory for pipeline artifacts and reports."
+    },
+    "scratch_dir": {
+      "type": "string",
+      "default": null,
+      "description": "Optional fast local scratch path. When set, Nextflow workDir becomes <scratch_dir>/nf-prism-work."
     },
     "skip_qc": {
       "type": "boolean",
@@ -59,7 +69,7 @@
         "deepvariant"
       ],
       "default": "haplotypecaller",
-      "description": "Variant calling engine selector."
+      "description": "Variant caller selector."
     },
     "workflow": {
       "type": "string",
@@ -68,7 +78,7 @@
         "genealogy"
       ],
       "default": "clinical",
-      "description": "Business endpoint branch."
+      "description": "Endpoint branch selector."
     },
     "clinvar_vcf": {
       "type": "string",
@@ -79,7 +89,100 @@
       "type": "integer",
       "default": 25,
       "minimum": 1,
-      "description": "Maximum number of prioritized variants retained in the clinical report tables."
+      "description": "Maximum number of prioritized variants retained in clinical report tables."
+    },
+    "patient_phenotype": {
+      "type": "string",
+      "default": null,
+      "description": "Optional HPO term string used to phenotype-filter clinical results."
+    },
+    "phenotype_gene_map": {
+      "type": "string",
+      "default": "${projectDir}/data/phenotype_gene_map.tsv",
+      "description": "Gene-to-phenotype mapping TSV used when patient_phenotype is set."
+    },
+    "max_cpus": {
+      "type": "integer",
+      "default": 16,
+      "minimum": 1,
+      "description": "Global CPU ceiling used by local execution profiles only (adaptive_local/aggressive_local). Ignored in AWS mode."
+    },
+    "max_ram_gb": {
+      "type": "integer",
+      "default": 64,
+      "minimum": 8,
+      "description": "Global RAM budget in GB used by auto-scaled process memory settings on local hosts. Ignored in AWS mode."
+    },
+    "max_forks": {
+      "type": "integer",
+      "default": 4,
+      "minimum": 1,
+      "description": "Maximum concurrent tasks for local execution only. Ignored in AWS mode."
+    },
+    "deepvariant_cpus": {
+      "type": "integer",
+      "default": 16,
+      "minimum": 1,
+      "description": "CPU allocation for the DeepVariant task."
+    },
+    "deepvariant_memory": {
+      "type": "string",
+      "default": "48 GB",
+      "description": "DeepVariant memory override (for example, '96 GB')."
+    },
+    "deepvariant_time": {
+      "type": "string",
+      "default": "24h",
+      "description": "DeepVariant wall-clock limit (for example, '24h' or '48h')."
+    },
+    "execution_mode": {
+      "type": "string",
+      "enum": [
+        "local",
+        "aws"
+      ],
+      "default": "local",
+      "description": "Execution environment selector. local = host-managed resources; aws = AWS Batch-managed scheduling."
+    },
+    "aws_region": {
+      "type": "string",
+      "default": "us-east-1",
+      "description": "AWS region used when execution_mode is aws and profile awsbatch is selected."
+    },
+    "aws_batch_queue": {
+      "type": "string",
+      "default": "nf-prism-batch-queue",
+      "description": "AWS Batch job queue name used by the awsbatch profile."
+    },
+    "aws_workdir": {
+      "type": "string",
+      "default": null,
+      "description": "S3 work directory for Nextflow cache in AWS mode (for example s3://my-bucket/nf-prism-work). Required in aws mode."
+    },
+    "vqsr_snp_resource": {
+      "type": "string",
+      "default": null,
+      "description": "Optional HapMap SNP truth resource for GATK VQSR on hg38."
+    },
+    "vqsr_omni_resource": {
+      "type": "string",
+      "default": null,
+      "description": "Optional Omni 2.5 SNP training resource for GATK VQSR on hg38."
+    },
+    "vqsr_indel_resource": {
+      "type": "string",
+      "default": null,
+      "description": "Optional Mills and 1000G gold standard indel resource for GATK VQSR on hg38."
+    },
+    "vqsr_1kg_resource": {
+      "type": "string",
+      "default": null,
+      "description": "Optional 1000G phase1 SNP training resource for GATK VQSR on hg38."
+    },
+    "vqsr_dbsnp_resource": {
+      "type": "string",
+      "default": null,
+      "description": "Optional dbSNP known-sites resource for GATK VQSR reporting on hg38."
     },
     "help": {
       "type": "boolean",

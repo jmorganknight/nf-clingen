@@ -13,7 +13,9 @@ process ALIGN_MINIMAP2 {
     def read2 = reads[1]
     """
     set -euo pipefail
-    minimap2 -t ${task.cpus} -ax sr ${reference} ${read1} ${read2} > ${sample_id}.aligned.sam
+        minimap2 -t ${task.cpus} -ax sr \
+            -R '@RG\\tID:${sample_id}\\tSM:${sample_id}\\tPL:ILLUMINA' \
+            ${reference} ${read1} ${read2} > ${sample_id}.aligned.sam
     """
 
     stub:
@@ -37,7 +39,9 @@ process ALIGN_BWAMEM2 {
     def read2 = reads[1]
     """
     set -euo pipefail
-    bwa-mem2 mem -t ${task.cpus} ${reference} ${read1} ${read2} > ${sample_id}.aligned.sam
+        bwa-mem2 mem -t ${task.cpus} \
+            -R '@RG\\tID:${sample_id}\\tSM:${sample_id}\\tPL:ILLUMINA' \
+            ${reference} ${read1} ${read2} > ${sample_id}.aligned.sam
     """
 
     stub:

@@ -40,6 +40,9 @@ workflow SF_ENDPOINTS {
             else {
                 report_input_ch = clinical_annotation_ch
             }
+
+            def report_builder_script = file("${projectDir}/scripts/build_clinical_report.py", checkIfExists: true)
+            report_input_ch = report_input_ch.map { row -> tuple(row[0], row[1], row[2], row[3], row[4], report_builder_script) }
             
             BUILD_CLINICAL_REPORT(report_input_ch)
             break
