@@ -16,6 +16,26 @@
 
 ---
 
+## Project status
+
+`nf-clingen` is in **active development**.
+
+### Branch status (current)
+
+| Branch | Status | Notes |
+|---|---|---|
+| Upstream (QC → alignment → preprocessing → variant calling) | `LIVE` | Covered by stub smoke routes and production modules; can be bypassed with `--input_vcf`. |
+| Clinical endpoint (`--workflow clinical`) | `LIVE` | End-to-end route is wired and exercised; reporting and annotation modules are active. |
+| Genealogy endpoint (`--workflow genealogy`) | `UNDER CONSTRUCTION` | Real-data end-to-end continuity is being finalized (phasing → imputation → manifest validation in progress); full benchmark sign-off is pending. |
+
+- Stub/smoke routes are wired and CI-tested.
+- Python unit tests are in place (`41` passing).
+- Real-data genealogy validation is still being finalized end-to-end (phasing/imputation/manifest continuity under active verification).
+
+Use for research and pipeline development workflows; continue treating production/clinical deployment as pending further validation.
+
+---
+
 ## What it does
 
 nf-clingen routes paired-end human sequencing data through a fully containerized stack, branching at variant calling into two downstream endpoints:
@@ -41,9 +61,9 @@ You can also skip straight to imputation by passing an existing VCF with `--inpu
 
 ---
 
-## Validated performance (HG002, GRCh38)
+## Validated performance (clinical path, HG002, GRCh38)
 
-Evaluated against GIAB v4 truth set, DeepVariant caller, full-genome:
+Evaluated against GIAB v4 truth set for the clinical DeepVariant path (full-genome):
 
 | Type | Recall | Precision | F1 |
 |---|---|---|---|
