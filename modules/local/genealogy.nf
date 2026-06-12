@@ -26,7 +26,7 @@ process PHASE_EAGLE2 {
     set -euo pipefail
 
     # Extract chromosomes present in this VCF (use grep+sed; awk capture groups are gawk-only)
-    chroms=\$(bcftools view -h ${vcf} | grep '^##contig' | grep -oP '(?<=ID=)[^,>]+' | grep -E '^(chr)?[0-9XY]+\$' | sort -V | tr '\\n' ' ')
+    chroms=\$(bcftools view -h ${vcf} | grep '^##contig' | sed -n 's/.*ID=\\([^,>]*\\).*/\\1/p' | grep -E '^(chr)?[0-9XY]+\$' | sort -V | tr '\\n' ' ')
 
     # Phase each chromosome separately then merge
     phased_vcfs=""
@@ -89,7 +89,7 @@ process IMPUTE_BEAGLE {
     set -euo pipefail
 
     # Extract chromosome list from VCF header
-    chroms=\$(zcat ${phased_vcf} | grep '^##contig' | grep -oP '(?<=ID=)[^,>]+' | grep -E '^(chr)?[0-9XY]+\$' | sort -V)
+    chroms=\$(zcat ${phased_vcf} | grep '^##contig' | sed -n 's/.*ID=\\([^,>]*\\).*/\\1/p' | grep -E '^(chr)?[0-9XY]+\$' | sort -V)
 
     if [[ -z "\${chroms}" ]]; then
         echo "WARNING: no ##contig headers; scanning records for chromosome names" >&2
