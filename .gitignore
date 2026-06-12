@@ -9,3 +9,9 @@ resume_run.log
 
 # Local editor settings
 .vscode/settings.json
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/

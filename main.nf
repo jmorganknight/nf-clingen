@@ -21,6 +21,38 @@ def asBoolean(value) {
     return value?.toString()?.trim()?.toLowerCase() in ['1', 'true', 'yes', 'y']
 }
 
+def inferBuildTag(value) {
+    def text = value?.toString()?.toLowerCase()
+    if( !text ) return null
+
+    if( text =~ /grch38|hg38|b38/ ) {
+        return 'grch38'
+    }
+    if( text =~ /grch37|hg37|b37/ ) {
+        return 'grch37'
+    }
+    return null
+}
+
+def inferPanelBuildTag(panelPath) {
+    if( !panelPath ) return null
+
+    def path = panelPath.toString()
+    def candidates = []
+
+    if( new File(path).exists() && new File(path).isDirectory() ) {
+        candidates.addAll(new File(path).listFiles()?.collect { it.name } ?: [])
+    }
+    else {
+        candidates << new File(path).name
+    }
+
+    def tags = candidates.collect { inferBuildTag(it) }.findAll { it }
+    if( tags.contains('grch38') ) return 'grch38'
+    if( tags.contains('grch37') ) return 'grch37'
+    return null
+}
+
 def normalizeParams() {
     ['aligner', 'preprocess', 'caller', 'workflow', 'execution_mode'].each { key ->
         params[key] = params[key].toString().trim().toLowerCase()
@@ -36,16 +68,28 @@ def normalizeParams() {
     if( params.clinvar_vcf?.toString()?.trim() in ['', 'null', 'none'] ) {
         params.clinvar_vcf = null
     }
+    if( params.gnomad_vcf?.toString()?.trim() in ['', 'null', 'none'] ) {
+        params.gnomad_vcf = null
+    }
     if( params.samplesheet?.toString()?.trim() in ['', 'null', 'none'] ) {
         params.samplesheet = null
+    }
+    if( params.input_vcf?.toString()?.trim() in ['', 'null', 'none'] ) {
+        params.input_vcf = null
+    }
+    if( params.input_vcf_tbi?.toString()?.trim() in ['', 'null', 'none'] ) {
+        params.input_vcf_tbi = null
+    }
+    if( params.input_sample_id?.toString()?.trim() in ['', 'null', 'none'] ) {
+        params.input_sample_id = null
     }
 }
 
 def validateParams() {
     def spec = schema()
 
-    if( !params.samplesheet && (!params.reads || params.reads.toString().trim() == '') ) {
-        throw new IllegalArgumentException("Provide either --reads or --samplesheet")
+    if( !params.input_vcf && !params.samplesheet && (!params.reads || params.reads.toString().trim() == '') ) {
+        throw new IllegalArgumentException("Provide either --input_vcf, --reads or --samplesheet")
     }
 
     if( params.execution_mode !in ['local', 'aws'] ) {
@@ -58,6 +102,28 @@ def validateParams() {
         }
         if( params.scratch_dir ) {
             log.warn "Ignoring --scratch_dir in AWS mode"
+        }
+    }
+
+    if( params.workflow == 'genealogy' ) {
+        def referenceBuild = inferBuildTag(params.reference)
+        def eagleMapBuild = inferPanelBuildTag(params.eagle2_genetic_map)
+        def panelBuild = inferPanelBuildTag(params.beagle_ref_panel)
+
+        def knownBuilds = [referenceBuild, eagleMapBuild, panelBuild].findAll { it }
+        if( knownBuilds && knownBuilds.unique().size() > 1 ) {
+            throw new IllegalArgumentException(
+                "Genealogy build mismatch detected: reference=${referenceBuild ?: 'unknown'}, " +
+                "eagle2_map=${eagleMapBuild ?: 'unknown'}, beagle_panel=${panelBuild ?: 'unknown'}. " +
+                "Use a consistent genome build across reference, genetic map, and reference panel files."
+            )
+        }
+
+        if( referenceBuild && panelBuild && referenceBuild != panelBuild ) {
+            throw new IllegalArgumentException(
+                "Genealogy reference build (${referenceBuild}) does not match Beagle panel build (${panelBuild}). " +
+                "Use a matching panel set or a matching reference FASTA."
+            )
         }
     }
 
@@ -149,6 +215,7 @@ def runtimeBanner() {
                      nf-clingen runtime
     ==============================================
     Reads pattern         : ${params.reads}
+    Input VCF             : ${params.input_vcf ?: 'disabled'}
     Reference FASTA       : ${params.reference}
     Output directory      : ${params.outdir}
     Skip QC               : ${params.skip_qc}
@@ -157,6 +224,7 @@ def runtimeBanner() {
     Variant caller        : ${params.caller}
     Endpoint workflow     : ${params.workflow}
     ClinVar resource      : ${params.clinvar_vcf ?: 'disabled'}
+    gnomAD resource       : ${params.gnomad_vcf ?: 'disabled'}
     Report variant limit  : ${params.max_report_variants}
     ==============================================
     Reference indexes are built on demand inside the workflow.
@@ -180,17 +248,29 @@ workflow {
         return
     }
 
-    def samples_ch = params.samplesheet
-        ? samplesChannelFromSheet(params.samplesheet)
-        : Channel.fromFilePairs(params.reads, checkIfExists: true)
-
     def reference_source_ch = Channel.of(file(params.reference, checkIfExists: true))
+    def called_vcf_ch
 
-    def upstream = SF_UPSTREAM(samples_ch, reference_source_ch)
-    def aligned = SF_ALIGNMENT(upstream.analysis_reads_ch, upstream.fasta_index_ch, upstream.bwa_reference_ch)
-    def preprocessed = SF_PREPROCESS(aligned.aligned_ch, upstream.fasta_index_ch)
-    def called = SF_CALLING(preprocessed.processed_bam_ch, reference_source_ch, upstream.fasta_index_ch, upstream.fasta_index_ch)
-    SF_ENDPOINTS(called.called_vcf_ch)
+    if( params.input_vcf ) {
+        def input_vcf = file(params.input_vcf, checkIfExists: true)
+        def input_vcf_index = file(params.input_vcf_tbi ?: "${params.input_vcf}.tbi", checkIfExists: true)
+        def sample_id = params.input_sample_id ?: input_vcf.name.replaceFirst(/\.vcf(\.gz)?$|\.bcf$/, '')
+        log.info "VCF-only routing: skipping QC, alignment, preprocessing, and variant calling. Reusing ${input_vcf}."
+        called_vcf_ch = Channel.of(tuple(sample_id, input_vcf, input_vcf_index))
+    }
+    else {
+        def samples_ch = params.samplesheet
+            ? samplesChannelFromSheet(params.samplesheet)
+            : Channel.fromFilePairs(params.reads, checkIfExists: true)
+
+        def upstream = SF_UPSTREAM(samples_ch, reference_source_ch)
+        def aligned = SF_ALIGNMENT(upstream.analysis_reads_ch, upstream.fasta_index_ch, upstream.bwa_reference_ch)
+        def preprocessed = SF_PREPROCESS(aligned.aligned_ch, upstream.fasta_index_ch)
+        def called = SF_CALLING(preprocessed.processed_bam_ch, reference_source_ch, upstream.fasta_index_ch, upstream.fasta_index_ch)
+        called_vcf_ch = called.called_vcf_ch
+    }
+
+    SF_ENDPOINTS(called_vcf_ch)
 }
 
 workflow.onComplete {

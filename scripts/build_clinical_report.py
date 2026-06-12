@@ -16,6 +16,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--aligner", required=True)
     parser.add_argument("--preprocess", required=True)
     parser.add_argument("--caller", required=True)
+    parser.add_argument("--reference", required=True)
+    parser.add_argument("--clinvar-resource", default="disabled")
+    parser.add_argument("--gnomad-resource", default="disabled")
+    parser.add_argument("--pipeline-version", default="unknown")
+    parser.add_argument("--nextflow-version", default="unknown")
+    parser.add_argument("--aligner-version", default="unknown")
+    parser.add_argument("--preprocess-version", default="unknown")
+    parser.add_argument("--caller-version", default="unknown")
+    parser.add_argument("--annotation-version", default="unknown")
+    parser.add_argument("--reporting-version", default="unknown")
+    parser.add_argument("--patient-phenotype", default="none")
+    parser.add_argument("--run-id", default="unknown")
+    parser.add_argument("--run-timestamp", default="unknown")
+    parser.add_argument("--run-parameters", default="")
     return parser.parse_args()
 
 
@@ -43,9 +57,12 @@ def main() -> None:
 
     sample_id = args.sample_id
     annotation_path = Path(args.annotation_tsv)
+    # Sanitize sample_id for filesystem use (strip characters unsafe in filenames)
+    import re as _re
+    safe_sample_id = _re.sub(r"[^\w\-.]", "_", sample_id)
     summary_path = Path(args.summary_json)
-    html_path = Path(f"{sample_id}.clinical_report.html")
-    critical_path = Path(f"{sample_id}.critical_variants.tsv")
+    html_path = Path(f"{safe_sample_id}.clinical_report.html")
+    critical_path = Path(f"{safe_sample_id}.critical_variants.tsv")
 
     with summary_path.open() as handle:
         summary = json.load(handle)
@@ -62,6 +79,55 @@ def main() -> None:
         writer.writerows(critical_rows)
 
     variant_rows = render_table(critical_rows)
+    clinvar_resource = args.clinvar_resource
+    annotation_db_rows = [
+      f"<li>Primary annotation source: {html.escape(str(summary.get('source', '.')))}</li>",
+      (
+        f"<li>ClinVar resource: {html.escape(Path(clinvar_resource).name)}"
+        if clinvar_resource not in {"", "disabled", "null", "none"}
+        else "<li>ClinVar resource: not provided for this run</li>"
+      ),
+      f"<li>Reference genome: {html.escape(Path(args.reference).name)}</li>",
+    ]
+
+    transparency_rows = [
+      ("Pipeline", f"nf-clingen {html.escape(args.pipeline_version)}"),
+      ("Workflow engine", f"Nextflow {html.escape(args.nextflow_version)}"),
+      ("Aligner", f"{html.escape(args.aligner)} ({html.escape(args.aligner_version)})"),
+      ("Preprocess", f"{html.escape(args.preprocess)} ({html.escape(args.preprocess_version)})"),
+      ("Variant caller", f"{html.escape(args.caller)} ({html.escape(args.caller_version)})"),
+      ("Clinical annotation", html.escape(args.annotation_version)),
+      ("Report rendering", html.escape(args.reporting_version)),
+      ("Patient phenotype input", html.escape(args.patient_phenotype)),
+    ]
+
+    transparency_table = "\n".join(
+      f"<tr><th>{label}</th><td>{value}</td></tr>" for label, value in transparency_rows
+    )
+
+    # Build run execution audit subsection
+    run_audit_rows = [
+      ("Run ID", html.escape(args.run_id)),
+      ("Run timestamp", html.escape(args.run_timestamp)),
+    ]
+    run_audit_table = "\n".join(
+      f"<tr><th>{label}</th><td>{value}</td></tr>" for label, value in run_audit_rows
+    )
+    
+    # Parse and format run parameters
+    run_params_html = "<li>No parameters captured</li>"
+    if args.run_parameters and args.run_parameters.strip():
+      params_list = []
+      for line in args.run_parameters.split("\n"):
+        if line.strip():
+          # Split by '=' if it looks like a key=value pair
+          if "=" in line:
+            key, value = line.split("=", 1)
+            params_list.append(f"<li><strong>{html.escape(key)}:</strong> {html.escape(value)}</li>")
+          else:
+            params_list.append(f"<li>{html.escape(line)}</li>")
+      run_params_html = "\n".join(params_list) if params_list else "<li>No parameters captured</li>"
+
     method_rows = "".join(
         [
             "<li>FASTQC and FASTP are applied unless the run uses --skip_qc.</li>",
@@ -133,6 +199,34 @@ def main() -> None:
   <div class=\"section\">
     <h2>Methods</h2>
     <ul>{method_rows}</ul>
+  </div>
+
+  <div class=\"section\">
+    <h2>Provenance and transparency</h2>
+    
+    <h3>Run execution audit</h3>
+    <table>
+      <tbody>
+        {run_audit_table}
+      </tbody>
+    </table>
+    <p class=\"small\"><strong>Run parameters:</strong></p>
+    <ul>
+      {run_params_html}
+    </ul>
+
+    <h3>Software and tool versions</h3>
+    <table>
+      <tbody>
+        {transparency_table}
+      </tbody>
+    </table>
+    
+    <h3>Reference and annotation databases</h3>
+    <ul>
+      {''.join(annotation_db_rows)}
+    </ul>
+    <p class=\"small\">This section provides run-level software and data provenance to support auditability, reproducibility, and regulatory/quality review workflows.</p>
   </div>
 
   <div class=\"section\">
