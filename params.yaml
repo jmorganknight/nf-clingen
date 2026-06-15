@@ -82,6 +82,22 @@
 # Example:
 # reads: data/samples/*_R{1,2}.fastq.gz
 
+# input_vcf
+#   Optional cached VCF input for endpoint-only runs.
+#   When set, nf-clingen skips QC, alignment, preprocessing, and variant calling.
+#   Example: results/benchmark_clinvar_dv/variants/HG002_NIST_Illumina2x250_R.deepvariant.vcf.gz
+# input_vcf: results/benchmark_clinvar_dv/variants/HG002_NIST_Illumina2x250_R.deepvariant.vcf.gz
+
+# input_vcf_tbi
+#   Optional tabix index for input_vcf.
+#   Defaults to <input_vcf>.tbi if omitted.
+# input_vcf_tbi: results/benchmark_clinvar_dv/variants/HG002_NIST_Illumina2x250_R.deepvariant.vcf.gz.tbi
+
+# input_sample_id
+#   Optional sample label to use when input_vcf is provided.
+#   Defaults to the input VCF basename.
+# input_sample_id: HG002_NIST_Illumina2x250_R
+
 # samplesheet
 #   Optional CSV manifest with columns: sample_id,r1,r2
 #   Supports local paths and s3:// URIs.
@@ -218,6 +234,17 @@
 #   Gene-to-phenotype mapping TSV used when patient_phenotype is set.
 #   Default: ${projectDir}/data/phenotype_gene_map.tsv
 # phenotype_gene_map: data/phenotype_gene_map.tsv
+
+# report_mode
+#   Control which variant reports are generated from clinical annotations.
+#   Supported values: 'clinical' | 'phenotype' | 'combined' | 'auto'
+#   - clinical: Full clinical annotation report (ignores patient_phenotype)
+#   - phenotype: Phenotype-filtered variants only (requires --patient_phenotype)
+#   - combined: Generate both clinical and phenotype-filtered reports (requires --patient_phenotype)
+#   - auto: Phenotype report if patient_phenotype provided, else clinical (DEFAULT)
+#   Example: --report_mode phenotype --patient_phenotype "HP:0001250 HP:0012362"
+#   Default: auto
+# report_mode: auto
 
 # ----------------------------------------------------------------------------
 # Runtime controls

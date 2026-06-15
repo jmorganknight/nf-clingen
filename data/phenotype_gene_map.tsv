@@ -17,6 +17,18 @@ HP:0001677	Coronary artery disease	LPA,PCSK9,APOB,APOE,LDLR
 HP:0001250	Seizures	SCN1A,PCDH19,GABRG2,SLC9A6,CDKL5
 HP:0002069	Tonic-clonic seizures	SCN1A,SCN1B,GABRA1,GABRB2
 HP:0001268	Intellectual disability	CDKL5,PCDH19,ARX,SLC9A6,MECP2
+HP:0012638	Abnormal nervous system morphology	SCN1A,SCN1B,GABRA1,GABRB2,PCDH19,CDKL5,MECP2
+
+# Hematologic / bleeding
+HP:0001873	Thrombocytopenia	F11,GP1BA,GP1BB,ITGA2B,ITGB3,VWF
+HP:0001892	Abnormal bleeding	F11,F8,F9,VWF,PROC,PROS1
+
+# Infectious disease susceptibility
+HP:0002719	Recurrent infections	IL10,IL19,TLR3,TLR7,STAT1,IFNAR1
+HP:0002721	Susceptibility to viral infections	IL10,IL19,TLR3,TLR7,IFNAR1,IFNAR2
+
+# Cardiovascular / coronary disease
+HP:0001677	Coronary artery disease	LPA,PCSK9,APOB,APOE,LDLR,CDKN2B,CDKN2B-AS1
 
 # Metabolic
 HP:0000365	Hearing impairment	GJB2,GJB6,MITOCHONDRIAL_VARIANTS

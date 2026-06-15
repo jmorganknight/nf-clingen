@@ -26,6 +26,83 @@ process INDEX_CLINVAR_RESOURCE {
     """
 }
 
+process INDEX_GNOMAD_RESOURCE {
+    tag 'gnomad-resource'
+    publishDir "${params.outdir}/clinical/resources", mode: 'copy', pattern: 'gnomad.vcf.gz*'
+
+    input:
+    path(gnomad_vcf)
+
+    output:
+    tuple path('gnomad.vcf.gz'), path('gnomad.vcf.gz.tbi'), emit: resource
+
+    script:
+    def isGz = gnomad_vcf.name.endsWith('.gz')
+    """
+    set -euo pipefail
+    if [[ '${isGz}' == 'true' ]]; then
+      cat ${gnomad_vcf} > gnomad.vcf.gz
+    else
+      bgzip -c ${gnomad_vcf} > gnomad.vcf.gz
+    fi
+    tabix -f -p vcf gnomad.vcf.gz
+    """
+
+    stub:
+    """
+    touch gnomad.vcf.gz gnomad.vcf.gz.tbi
+    """
+}
+
+process RUN_GNOMAD_ANNOTATION {
+    tag "${sample_id}"
+    publishDir "${params.outdir}/clinical/annotations", mode: 'copy'
+
+    input:
+    tuple val(sample_id), path(vcf), path(vcf_index), path(gnomad_vcf), path(gnomad_tbi)
+
+    output:
+    tuple val(sample_id), path("${sample_id}.gnomad.annotated.vcf.gz"), path("${sample_id}.gnomad.annotated.vcf.gz.tbi"), emit: annotated
+
+    script:
+    """
+    set -euo pipefail
+    ln -sf ${vcf} input.vcf.gz
+    ln -sf ${vcf_index} input.vcf.gz.tbi
+    ln -sf ${gnomad_vcf} gnomad_input.vcf.gz
+    ln -sf ${gnomad_tbi} gnomad_input.vcf.gz.tbi
+
+    # Normalize chromosome naming if needed so annotation join keys align.
+    query_contig=\$(bcftools view -H input.vcf.gz | head -n 1 | cut -f1 || true)
+    gnomad_contig=\$(bcftools view -H gnomad_input.vcf.gz | head -n 1 | cut -f1 || true)
+
+    gnomad_for_annot=gnomad_input.vcf.gz
+    if [[ "\${query_contig}" == chr* && "\${gnomad_contig}" != chr* ]]; then
+      : > rename_chrs.tsv
+      for c in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 X Y MT; do
+        printf '%s\tchr%s\n' "\${c}" "\${c}" >> rename_chrs.tsv
+      done
+      bcftools annotate --rename-chrs rename_chrs.tsv -Oz -o gnomad.norm.vcf.gz gnomad_input.vcf.gz
+      tabix -f -p vcf gnomad.norm.vcf.gz
+      gnomad_for_annot=gnomad.norm.vcf.gz
+    fi
+
+    bcftools annotate \
+      -a \${gnomad_for_annot} \
+      -c INFO/AF,INFO/AF_popmax \
+      -Oz \
+      -o ${sample_id}.gnomad.annotated.vcf.gz \
+      input.vcf.gz
+
+    tabix -f -p vcf ${sample_id}.gnomad.annotated.vcf.gz
+    """
+
+    stub:
+    """
+    touch ${sample_id}.gnomad.annotated.vcf.gz ${sample_id}.gnomad.annotated.vcf.gz.tbi
+    """
+}
+
 process RUN_CLINICAL_ANNOTATION {
     tag "${sample_id}"
     publishDir "${params.outdir}/clinical/annotations", mode: 'copy'
@@ -43,11 +120,15 @@ process RUN_CLINICAL_ANNOTATION {
     ln -sf ${vcf_index} ${sample_id}.clinical.annotated.vcf.gz.tbi
 
     # Build query fields dynamically so missing INFO tags do not crash annotation.
+    af_expr='.'
     clnsig_expr='.'
     clndn_expr='.'
     geneinfo_expr='.'
     ann_expr='.'
     vcf_header=\$(bcftools view -h ${sample_id}.clinical.annotated.vcf.gz)
+    if grep -q '^##INFO=<ID=AF,' <<< "\${vcf_header}"; then
+      af_expr='%INFO/AF'
+    fi
     if grep -q '^##INFO=<ID=CLNSIG,' <<< "\${vcf_header}"; then
       clnsig_expr='%INFO/CLNSIG'
     fi
@@ -62,25 +143,27 @@ process RUN_CLINICAL_ANNOTATION {
     fi
 
     bcftools query \
-      -f "%CHROM\t%POS\t%ID\t%REF\t%ALT\t%FILTER[\t%GT]\t\${clnsig_expr}\t\${clndn_expr}\t\${geneinfo_expr}\t\${ann_expr}\n" \
+      -f "%CHROM\t%POS\t%ID\t%REF\t%ALT\t%FILTER[\t%GT]\t\${af_expr}\t\${clnsig_expr}\t\${clndn_expr}\t\${geneinfo_expr}\t\${ann_expr}\n" \
       ${sample_id}.clinical.annotated.vcf.gz > ${sample_id}.clinical.raw.tsv
 
-    awk 'BEGIN { OFS="\t"; print "rank","chrom","pos","id","ref","alt","filter","genotype","severity","clnsig","disease","gene","annotation" }
+    awk 'BEGIN { OFS="\t"; print "rank","chrom","pos","id","ref","alt","filter","genotype","af","severity","clnsig","disease","gene","annotation" }
          {
              genotype = (\$7 == "" ? "." : \$7)
              if (genotype == "0/0" || genotype == "0|0" || genotype == "./." || genotype == ".|.") next
-             clnsig = toupper(\$8)
-             disease = (\$9 == "" ? "." : \$9)
-             gene = (\$10 == "" ? "." : \$10)
-             ann = toupper(\$11)
+         af = (\$8 == "" ? "." : \$8)
+         clnsig = toupper(\$9)
+         disease = (\$10 == "" ? "." : \$10)
+         gene = (\$11 == "" ? "." : \$11)
+         ann = toupper(\$12)
              severity = "review"
              rank = 4
+       if (af != "." && af+0 >= 0.01) { severity = "review"; rank = 4 }
          if (clnsig ~ /CONFLICTING_CLASSIFICATIONS/) { severity = "review"; rank = 4 }
          else if (clnsig ~ /PATHOGENIC/ && clnsig ~ /LIKELY_PATHOGENIC/) { severity = "high"; rank = 2 }
          else if (clnsig ~ /(^|[|,; ])PATHOGENIC([|,; ]|\$)/) { severity = "critical"; rank = 1 }
              else if (ann ~ /HIGH|STOP_GAINED|FRAMESHIFT|SPLICE/ || clnsig ~ /LIKELY_PATHOGENIC/) { severity = "high"; rank = 2 }
              else if (\$6 == "PASS" || \$6 == ".") { severity = "moderate"; rank = 3 }
-             print rank,\$1,\$2,\$3,\$4,\$5,\$6,genotype,severity,(\$8 == "" ? "." : \$8),disease,gene,(\$11 == "" ? "." : \$11)
+         print rank,\$1,\$2,\$3,\$4,\$5,\$6,genotype,af,severity,(\$9 == "" ? "." : \$9),disease,gene,(\$12 == "" ? "." : \$12)
          }' ${sample_id}.clinical.raw.tsv > ${sample_id}.clinical.scored.tsv
 
     tail -n +2 ${sample_id}.clinical.scored.tsv | sort -t \$'\t' -k1,1n -k2,2 -k3,3n > ${sample_id}.clinical.sorted.tsv
@@ -273,6 +356,13 @@ process BUILD_CLINICAL_REPORT {
     tuple val(sample_id), path("${sample_id}.critical_variants.tsv"), path("${sample_id}.clinical_report.html"), path("${sample_id}.clinical_report.pdf"), emit: deliverables
 
     script:
+    def run_params = """workflow=${params.workflow}
+input_vcf=${params.input_vcf ?: 'N/A'}
+input_fastq_r1=${params.input_fastq_r1 ?: 'N/A'}
+input_fastq_r2=${params.input_fastq_r2 ?: 'N/A'}
+caller=${params.caller}
+aligner=${params.aligner}
+report_mode=${params.report_mode ?: 'N/A'}"""
     """
     set -euo pipefail
 
@@ -302,7 +392,21 @@ process BUILD_CLINICAL_REPORT {
       --annotated-vcf ${vcf} \
       --aligner "${params.aligner}" \
       --preprocess "${params.preprocess}" \
-      --caller "${params.caller}"
+      --caller "${params.caller}" \
+      --reference "${params.reference}" \
+      --clinvar-resource "${params.clinvar_vcf ?: 'disabled'}" \
+      --gnomad-resource "${params.gnomad_vcf ?: 'disabled'}" \
+      --pipeline-version "${workflow.manifest.version ?: 'unknown'}" \
+      --nextflow-version "${nextflow.version}" \
+      --aligner-version "${ params.aligner == 'minimap2' ? '2.28 (quay.io/biocontainers/minimap2:2.28--he4a0461_3)' : '2.2.1 (quay.io/biocontainers/bwa-mem2:2.2.1--h6a68c12_6)' }" \
+      --preprocess-version "${ params.preprocess == 'samtools' ? '1.20 (quay.io/biocontainers/samtools:1.20--h50ea8bc_0)' : '5.1.3 (ghcr.io/exascience/elprep:5.1.3)' }" \
+      --caller-version "${ params.caller == 'deepvariant' ? '1.6.1 (google/deepvariant:1.6.1)' : '4.6.1.0 (broadinstitute/gatk:4.6.1.0)' }" \
+      --annotation-version "bcftools 1.20 (quay.io/biocontainers/bcftools:1.20--h8b25389_0)" \
+      --reporting-version "Python 3.11 + WeasyPrint 61.2 + pydyf 0.10.0" \
+      --patient-phenotype "${params.patient_phenotype ?: 'none'}" \
+      --run-id "${workflow.runName}" \
+      --run-timestamp "\$(date -Iseconds)" \
+      --run-parameters "${run_params}"
 
     weasyprint ${sample_id}.clinical_report.html ${sample_id}.clinical_report.pdf
     """

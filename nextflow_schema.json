@@ -24,6 +24,21 @@
       "default": null,
       "description": "Optional CSV manifest with columns sample_id,r1,r2. Supports local or s3:// paths. When set, --reads is ignored."
     },
+    "input_vcf": {
+      "type": "string",
+      "default": null,
+      "description": "Optional cached VCF input. When set, the workflow skips QC, alignment, preprocessing, and variant calling and starts at clinical/genealogy endpoints."
+    },
+    "input_vcf_tbi": {
+      "type": "string",
+      "default": null,
+      "description": "Optional tabix index for --input_vcf. Defaults to <input_vcf>.tbi when omitted."
+    },
+    "input_sample_id": {
+      "type": "string",
+      "default": null,
+      "description": "Optional sample ID label used when --input_vcf is provided. Defaults to the input VCF basename."
+    },
     "reference": {
       "type": "string",
       "default": "${projectDir}/data/GRCh38.fasta",
@@ -85,6 +100,11 @@
       "default": null,
       "description": "Optional ClinVar VCF used to overlay local clinical assertions."
     },
+    "gnomad_vcf": {
+      "type": "string",
+      "default": null,
+      "description": "Optional gnomAD VCF used to annotate population allele frequencies (for example INFO/AF and INFO/AF_popmax)."
+    },
     "max_report_variants": {
       "type": "integer",
       "default": 25,
@@ -100,6 +120,12 @@
       "type": "string",
       "default": "${projectDir}/data/phenotype_gene_map.tsv",
       "description": "Gene-to-phenotype mapping TSV used when patient_phenotype is set."
+    },
+    "report_mode": {
+      "type": "string",
+      "default": "auto",
+      "enum": ["clinical", "phenotype", "combined", "auto"],
+      "description": "Control which variant reports are generated: 'clinical' = clinical annotations only; 'phenotype' = phenotype-matched genes only (requires --patient_phenotype); 'combined' = generate both clinical and phenotype reports; 'auto' = phenotype if --patient_phenotype provided, else clinical."
     },
     "max_cpus": {
       "type": "integer",
