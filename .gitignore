@@ -15,3 +15,22 @@ __pycache__/
 *.pyc
 *.pyo
 .pytest_cache/
+
+# Local handoff/notes
+GENEALOGY_READY.md
+HANDOFF_AUTONOMY.md
+
+# Local reference/resources (large, machine-specific)
+data/GRCh38.dict
+data/GRCh38.fasta
+data/GRCh38.fasta.fai
+data/GRCh38.fasta.gz
+data/GRCh38.fasta.gzi
+data/nextera_expanded_exome_target_regions.bed
+data/nexterarapidcapture_expandedexome_targetedregions.bed.gz
+data/beagle/
+data/benchmark/
+data/clinvar/
+data/eagle2/
+data/gatk_bundle/
+data/truth_sets/
