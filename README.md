@@ -26,11 +26,11 @@
 |---|---|---|
 | Upstream (QC → alignment → preprocessing → variant calling) | `LIVE` | Covered by stub smoke routes and production modules; can be bypassed with `--input_vcf`. |
 | Clinical endpoint (`--workflow clinical`) | `LIVE` | End-to-end route is wired and exercised; reporting and annotation modules are active. |
-| Genealogy endpoint (`--workflow genealogy`) | `UNDER CONSTRUCTION` | Real-data end-to-end continuity is being finalized (phasing → imputation → manifest validation in progress); full benchmark sign-off is pending. |
+| Genealogy endpoint (`--workflow genealogy`) | `LIVE` | Real-data end-to-end route is now passing (Eagle2 phasing → Beagle imputation → concat → genealogy manifest/report/audit); benchmark expansion and optimization are pending. |
 
 - Stub/smoke routes are wired and CI-tested.
 - Python unit tests are in place (`41` passing).
-- Real-data genealogy validation is still being finalized end-to-end (phasing/imputation/manifest continuity under active verification).
+- Real-data genealogy validation has completed successfully for HG002 on GRCh38; broader benchmark coverage and performance tuning remain in progress.
 
 Use for research and pipeline development workflows; continue treating production/clinical deployment as pending further validation.
 
@@ -121,6 +121,8 @@ nextflow run . \
 ```
 
 > **Build safety guard**: the pipeline blocks runs where `--reference`, `--eagle2_genetic_map`, and `--beagle_ref_panel` point to different genome builds and exits with a clear error message.
+
+> **Beagle hardening**: genealogy imputation now includes an input dedup safeguard that removes repeated marker keys (`CHROM:POS:REF:ALT`) before Beagle execution and skips header-only chromosomes (for example `chrY` in XX samples). This prevents `Duplicate marker` and `missing VCF data lines` failures in real-world resource prep flows.
 
 ### Input VCF shortcut (skip alignment/calling)
 
