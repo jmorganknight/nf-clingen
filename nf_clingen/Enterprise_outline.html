@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Enterprise Clinical Genomics Outline</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --fg: #0f172a;
+      --card: #ffffff;
+      --muted: #475569;
+      --accent: #0b5fff;
+      --border: #dbe2f0;
+    }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      color: var(--fg);
+      background: linear-gradient(180deg, #eef3ff 0%, var(--bg) 100%);
+    }
+    .wrap {
+      max-width: 1400px;
+      margin: 24px auto;
+      padding: 0 16px 24px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+      color: #0b204a;
+      text-decoration: underline;
+      text-decoration-color: var(--accent);
+      text-underline-offset: 4px;
+    }
+    p {
+      margin: 0 0 16px;
+      color: var(--muted);
+    }
+    .mermaid {
+      overflow-x: auto;
+    }
+    .footer {
+      margin-top: 12px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Enterprise Clinical Pan-Variant Pipeline</h1>
+      <p>Simple enterprise view: platform-specific ingest and QC, shared core processing, specialized calling, and final harmonized reporting.</p>
+
+      <pre class="mermaid">
+flowchart TB
+    subgraph SR[Short-Read Track]
+      direction TB
+      ILL[<u>Illumina input *</u><br/>BCL FASTQ]
+      ULT[<u>Ultima input *</u><br/>FASTQ]
+      ILLQC[<u>Illumina ingest and QC</u><br/>bcl-convert and/or FASTQ<br/>optional fastp<br/>QC review]
+      ULTQC[<u>Ultima ingest and QC</u><br/>platform FASTQ QC<br/>optional fastp<br/>platform filter review]
+      ILLALN[<u>Illumina alignment</u><br/>BWA-MEM2<br/>samtools<br/>Picard MarkDuplicates]
+      ULTALN[<u>Ultima alignment and tuning</u><br/>BWA-MEM2<br/>samtools<br/>platform-calibrated filters]
+      SRMERGE[<u>Shared short-read analysis *</u><br/>harmonized BAM and QC gates]
+    end
+
+    subgraph LR[Long-Read Track]
+      direction TB
+      ONT[<u>ONT input *</u><br/>POD5 or FAST5 FASTQ]
+      PB[<u>PacBio HiFi input *</u><br/>BAM CCS FASTQ]
+      LRQC[<u>Long-read ingest and QC *</u><br/>Dorado or ccs<br/>NanoPlot or pbqc<br/>QC review]
+      LRALN[<u>Alignment</u><br/>minimap2 or pbmm2<br/>samtools]
+      LRMERGE[<u>Shared long-read analysis</u><br/>harmonized BAM and QC gates]
+    end
+
+    subgraph CG[Complete Genomics Track]
+      direction TB
+      CGIN[<u>Complete Genomics input *</u><br/>CGI native FASTQ or BAM export]
+      CGQC[<u>Platform QC and preprocess *</u>]
+      CGALN[<u>Platform alignment and calling</u>]
+      CGMERGE[<u>Shared CGI analysis</u><br/>harmonized variant evidence]
+    end
+
+    subgraph VAR[Shared Variant Branches]
+      direction TB
+      BRANCHSEL[<u>Normalization and split gate</u><br/>bcftools GATK vt normalization<br/>assay-aware branch routing]
+      SVI[<u>SNV and simple indel branch</u><br/>small-variant optimized methods<br/>GATK HaplotypeCaller or DeepVariant]
+      INDELX[<u>Complex indel branch</u><br/>multi-allelic atomization and normalization<br/>bcftools norm and decomposition]
+      SVCNV[<u>SV and CNV branch</u><br/>structural and copy-number specific models<br/>Sniffles2 Manta pbsv or CNVkit]
+    end
+
+    ILL --> ILLQC --> ILLALN --> SRMERGE
+    ULT --> ULTQC --> ULTALN --> SRMERGE
+    ONT --> LRQC --> LRALN --> LRMERGE
+    PB --> LRQC
+    CGIN --> CGQC --> CGALN --> CGMERGE
+
+    POSTPROC[<u>Post-processing Analysis *</u><br/>reference genome realignment<br/>QC metric aggregation<br/>quality filtering]
+
+    SRMERGE --> POSTPROC
+    LRMERGE --> POSTPROC
+    CGMERGE --> POSTPROC
+    POSTPROC --> BRANCHSEL
+    BRANCHSEL --> SVI
+    BRANCHSEL --> INDELX
+    BRANCHSEL --> SVCNV
+
+    SVI --> SNVVCF[<u>Common SNV and indel VCF</u><br/>bcftools norm]
+    INDELX --> INDELVCF[<u>Normalized complex indel VCF</u><br/>atomized and harmonized calls]
+    SVCNV --> SVCNVVCF[<u>Common SV and CNV VCF</u><br/>harmonized breakpoint and dosage calls]
+
+    SNVVCF --> MERGE[<u>Unified variant set *</u><br/>original VCF retained downstream]
+    INDELVCF --> MERGE
+    SVCNVVCF --> MERGE
+
+    subgraph GENEAL[Genealogy and Phasing]
+      direction TB
+      PCA[<u>PCA and ancestry</u><br/>PLINK LD pruning and PCA<br/>derived matrix only]
+      PHASE[<u>Phasing with Eagle</u><br/>original VCF continues downstream<br/>haplotype phasing<br/>cis vs trans classification]
+      IMPUTE[<u>Imputation with Beagle</u><br/>Phased genotypes<br/>reference panel imputation<br/>fill missing genotypes]
+    end
+
+    subgraph PRS[Polygenic Risk]
+      direction TB
+      PRSCALC[<u>PRS calculation</u><br/>PLINK scoring (--score)<br/>population-matched weights<br/>score normalization]
+      PRSOUT[<u>Risk stratification output</u><br/>percentile ranking<br/>clinical context review]
+    end
+
+    MERGE --> PCA --> PHASE --> IMPUTE
+    MERGE --> PRSCALC --> PRSOUT
+    IMPUTE --> PHASED_OUT[<u>Phased and context-enriched VCF</u><br/>genealogy results included]
+
+    PHASED_OUT --> ANNO[<u>Annotation *</u><br/>VEP core and SV/CNV plugins<br/>ClinVar and gnomAD]
+    ANNO --> TRIAGE[<u>Clinical triage *</u><br/>ACMG and AMP framework<br/>InterVar]
+    PRSOUT --> TRIAGE
+    TRIAGE --> REPORT[<u>Final merged clinical report *</u><br/>LIS integration and audit trail]
+
+      </pre>
+
+      <div class="footer">
+        * indicates a major governance checkpoint or sign-off point for CLIA, CAP, and HIPAA control review.
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose'
+    });
+  </script>
+</body>
+</html>
